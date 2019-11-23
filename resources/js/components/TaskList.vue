@@ -21,7 +21,7 @@
                   </tr>
                 </thead>
                 <tbody >
-                  <tr v-for="(task, index) in tasks" :key="task.data.id">
+                  <tr v-for="task in tasks" :key="task.id" :row="task">
                     <th scope="row">
                       <div class="media align-items-center">
                         <div class="media-body">
@@ -58,7 +58,7 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <a href="#" @click="loadUpdateModal(index)" class="dropdown-item" data-toggle="modal" data-target="#updateTask"><i class="fas fa-pencil-alt"></i>Edit</a>
+                          <a href="#" @click.prevent="loadUpdateModal(task.data)" class="dropdown-item" data-toggle="modal" data-target="#updateTask"><i class="fas fa-pencil-alt"></i>Edit</a>
                           <a class="dropdown-item" href="#"><i class="far fa-trash-alt"></i>Delete</a>
                         </div>
                       </div>
@@ -110,8 +110,9 @@
                                    <div class="form-group">
                                       <label for="name">Name</label>
                                       <input v-model="new_task.name" id="name" type="text" class="form-control" autocomplete="off">
+                                      <input v-model="new_task.clocked_in" id="clocked_in" type="text" class="form-control" autocomplete="off">
                                   </div>
-                                  <div v-if="formEditMode">
+                                  <div v-if="formEditMode(new_task)">
                                       <multiselect 
                                       id="friends"
                                       :multiple="true"
@@ -125,12 +126,12 @@
 
                                       </multiselect>
                                   
-                                      <button class="btn btn-danger mt-1" @click="submitForm">Save</button>
+                                      <button class="btn btn-danger mt-1" @click.prevent="submit">Save</button>
                                   </div>
                                   <hr/>
-
-                                  <button class="btn btn-default btn-sm mt-1" @click.prevent="clockIn">Clock In</button>
-                                  <button class="btn btn-default btn-sm mt-1" @click.prevent="clockOut">Clock Out</button>
+                                  
+                                  <button class="btn btn-default btn-sm mt-1" @click.prevent="clockIn(new_task.id)">Clock In</button>
+                                  <button class="btn btn-default btn-sm mt-1" @click.prevent="clockOut(new_task.id)">Clock Out</button>
                            
                             </div>
                         </div>
@@ -151,47 +152,59 @@ export default {
             task: {
                 name: '',
                 friends: '',
-                
             },
             tasks: [],
             friends: [],
             new_task: false
         }
     },
-  
+    
     methods: {
-        loadUpdateModal(index)
+        loadUpdateModal(row)
          {
-                $("#updateTask").modal("show");
-                this.new_task = this.task[index];
+            this.new_task = row;
+            $("#updateTask").modal("show");  
         },
-       submitForm ()
+        formEditMode(task) {
+            if(task) {
+              return task.name.length > 0;
+            } else {
+              return false;
+            }
+            
+        },
+       submit ()
         {
-             axios.patch('/api/task/' + this.$route.params.id)
-            .then(response =>{
-                console.log(response);
-                //this.$router.push('/tasks');
+             axios.patch('/api/task/' + this.new_task.id , {
+
+               name: this.new_task.name
+
+             }).then(response =>{
+                $("#updateTask").modal("hide");  
+                 console.log(response);
             })
             .catch(errors=>{
                 console.log("Error");
                 this.errors = errors.response.data.errors;
             });
         },
-        clockIn ()
+        clockIn (row)
         {
-            axios.patch('/api/task/' + this.$route.params.id + '/clockin')
+            this.new_task = row;
+            axios.patch('/api/task/' + this.new_task + '/clockin')
             .then(response => {
-                this.$router.push('/tasks');
+                $("#updateTask").modal("hide");  
             })
             .catch(errors => {
                 this.errors = errors.reponse.data.errors;
             });
         },
-        clockOut ()
+        clockOut (row)
         {
-            axios.patch('/api/task/' + this.$route.params.id + '/clockout')
+            this.new_task = row;
+            axios.patch('/api/task/' + this.new_task + '/clockout')
             .then(response => {
-                this.$router.push('/tasks');
+                $("#updateTask").modal("hide");  
             })
             .catch(errors => {
                 this.errors = errors.reponse.data.errors;
@@ -223,10 +236,6 @@ export default {
                 }
             });
     },
-    computed: {
-        formEditMode() {
-            return this.task.name.length > 0;
-        }
-    }
+ 
 }
 </script>

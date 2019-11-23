@@ -2384,6 +2384,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TaskList",
@@ -2400,34 +2401,46 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    loadUpdateModal: function loadUpdateModal(index) {
+    loadUpdateModal: function loadUpdateModal(row) {
+      this.new_task = row;
       $("#updateTask").modal("show");
-      this.new_task = this.task[index];
     },
-    submitForm: function submitForm() {
+    formEditMode: function formEditMode(task) {
+      if (task) {
+        return task.name.length > 0;
+      } else {
+        return false;
+      }
+    },
+    submit: function submit() {
       var _this = this;
 
-      axios.patch('/api/task/' + this.$route.params.id).then(function (response) {
-        console.log(response); //this.$router.push('/tasks');
+      axios.patch('/api/task/' + this.new_task.id, {
+        name: this.new_task.name
+      }).then(function (response) {
+        $("#updateTask").modal("hide");
+        console.log(response);
       })["catch"](function (errors) {
         console.log("Error");
         _this.errors = errors.response.data.errors;
       });
     },
-    clockIn: function clockIn() {
+    clockIn: function clockIn(row) {
       var _this2 = this;
 
-      axios.patch('/api/task/' + this.$route.params.id + '/clockin').then(function (response) {
-        _this2.$router.push('/tasks');
+      this.new_task = row;
+      axios.patch('/api/task/' + this.new_task + '/clockin').then(function (response) {
+        $("#updateTask").modal("hide");
       })["catch"](function (errors) {
         _this2.errors = errors.reponse.data.errors;
       });
     },
-    clockOut: function clockOut() {
+    clockOut: function clockOut(row) {
       var _this3 = this;
 
-      axios.patch('/api/task/' + this.$route.params.id + '/clockout').then(function (response) {
-        _this3.$router.push('/tasks');
+      this.new_task = row;
+      axios.patch('/api/task/' + this.new_task + '/clockout').then(function (response) {
+        $("#updateTask").modal("hide");
       })["catch"](function (errors) {
         _this3.errors = errors.reponse.data.errors;
       });
@@ -2451,11 +2464,6 @@ __webpack_require__.r(__webpack_exports__);
         console.log("errors");
       }
     });
-  },
-  computed: {
-    formEditMode: function formEditMode() {
-      return this.task.name.length > 0;
-    }
   }
 });
 
@@ -21055,8 +21063,8 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "tbody",
-                    _vm._l(_vm.tasks, function(task, index) {
-                      return _c("tr", { key: task.data.id }, [
+                    _vm._l(_vm.tasks, function(task) {
+                      return _c("tr", { key: task.id, attrs: { row: task } }, [
                         _c("th", { attrs: { scope: "row" } }, [
                           _c(
                             "div",
@@ -21115,7 +21123,8 @@ var render = function() {
                                     },
                                     on: {
                                       click: function($event) {
-                                        return _vm.loadUpdateModal(index)
+                                        $event.preventDefault()
+                                        return _vm.loadUpdateModal(task.data)
                                       }
                                     }
                                   },
@@ -21190,10 +21199,40 @@ var render = function() {
                         _vm.$set(_vm.new_task, "name", $event.target.value)
                       }
                     }
+                  }),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.new_task.clocked_in,
+                        expression: "new_task.clocked_in"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      id: "clocked_in",
+                      type: "text",
+                      autocomplete: "off"
+                    },
+                    domProps: { value: _vm.new_task.clocked_in },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.new_task,
+                          "clocked_in",
+                          $event.target.value
+                        )
+                      }
+                    }
                   })
                 ]),
                 _vm._v(" "),
-                _vm.formEditMode
+                _vm.formEditMode(_vm.new_task)
                   ? _c(
                       "div",
                       [
@@ -21221,7 +21260,12 @@ var render = function() {
                           "button",
                           {
                             staticClass: "btn btn-danger mt-1",
-                            on: { click: _vm.submitForm }
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.submit($event)
+                              }
+                            }
                           },
                           [_vm._v("Save")]
                         )
@@ -21239,7 +21283,7 @@ var render = function() {
                     on: {
                       click: function($event) {
                         $event.preventDefault()
-                        return _vm.clockIn($event)
+                        return _vm.clockIn(_vm.new_task.id)
                       }
                     }
                   },
@@ -21253,7 +21297,7 @@ var render = function() {
                     on: {
                       click: function($event) {
                         $event.preventDefault()
-                        return _vm.clockOut($event)
+                        return _vm.clockOut(_vm.new_task.id)
                       }
                     }
                   },
