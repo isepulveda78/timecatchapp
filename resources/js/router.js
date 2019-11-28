@@ -1,18 +1,29 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import Dashboard from "./views/Dashboard";
+import ProjectCreate from "./views/ProjectCreate";
 import TaskCreate from "./views/TaskCreate";
-import TasksIndex from "./views/TasksIndex";
-import TaskEdit from "./views/TaskEdit";
+import ProjectIndex from "./views/ProjectIndex";
+import TaskIndex from "./views/TaskIndex";
 
 Vue.use(VueRouter);
 
 export default new VueRouter({
     routes: [
         {
-            path: '/tasks', component: TasksIndex
+            path: '/dashboard', component: Dashboard
         },
         {
-            path: '/task/:id/edit', component: TaskEdit
+            path: '/project/create', component: ProjectCreate
+        },
+        {
+            path: '/task/create', component: TaskCreate
+        },
+        {
+            path: '/projects', component: ProjectIndex
+        },
+        {
+            path: '/tasks', component: TaskIndex
         }
     ],
     mode: 'history'

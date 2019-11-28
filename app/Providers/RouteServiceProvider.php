@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Task;
+use App\Project;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -28,6 +29,12 @@ class RouteServiceProvider extends ServiceProvider
             $task = new Task;
 
             return Task::with('friends')->where($task->getRouteKeyName(), $value)->first();
+        });
+
+        $this->bind('project', function ($value) {
+            $project = new Project;
+
+            return Project::with('tasks')->where($project->getRouteKeyName(), $value)->first();
         });
 
         parent::boot();

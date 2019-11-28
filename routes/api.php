@@ -18,4 +18,20 @@ Route::middleware('auth:api')->group( function(){
 
     Route::delete('/task/{task}', 'TaskController@destroy');
 
+
+    /** Project's routes */
+
+    Route::get('/project_tasks', 'ProjectController@userTasks');
+
+    Route::get('/projects', 'ProjectController@index');
+
+    Route::post('/project', 'ProjectController@store');
+
+    Route::get('/project/{project}', 'ProjectController@show');
+
+    Route::patch('/project/{project}', 'ProjectController@update');
+
+    Route::delete('/project/{project}', 'ProjectController@destroy');
+
+
 }); 

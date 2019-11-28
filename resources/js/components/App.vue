@@ -93,16 +93,23 @@
               <h6 class="navbar-heading text-muted">Dashboard</h6>
               <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a class="nav-link " href="/tasks">
-                      <i class="fas fa-tasks"></i>Tasks
+                  <a class="nav-link " href="/dashboard">
+                      <i class="fas fa-home"></i>Home
                   </a>
                 </li>
 
                  <li class="nav-item">
-                  <a class="nav-link " href="#">
+                  <a class="nav-link " href="/projects">
                       <i class="fas fa-project-diagram"></i> Projects
                   </a>
                 </li>
+
+                <li class="nav-item">
+                  <a class="nav-link " href="/tasks">
+                      <i class="fas fa-tasks"></i> Tasks
+                  </a>
+                </li>
+               
                
               </ul>
               <!-- Divider -->
@@ -129,8 +136,6 @@
 </template>
 
 <script>
-
-import TaskAndProject from '../components/TaskAndProject';
 import SearchNav from '../components/SearchNav';
 import Footer from '../components/Footer';
 export default {
@@ -142,7 +147,6 @@ export default {
     ],
 
     components: {
-      TaskAndProject,
       SearchNav,
       Footer
     },

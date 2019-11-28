@@ -21,14 +21,16 @@ class TaskController extends Controller
     {
         $this->authorize('viewAny', Task::class);
 
-        return TaskResource::collection(request()->user()->tasks);
+        return TaskResource::collection(request()->user()->tasks()->paginate(5));
     }
 
-    public function store(Request $request)
+    public function store(Task $task, Request $request)
     {
        $this->authorize('create', Task::class);
        
        $task = request()->user()->tasks()->create($this->validateData());
+
+       $this->syncFriendsFromRequest($task,$request);
 
        return (new TaskResource($task))
        ->response()
@@ -69,8 +71,7 @@ class TaskController extends Controller
     public function validateData()
     {
         return request()->validate([
-            'name' => 'required',
-            'user_id' => 'nullable',
+            'name' => 'required'
         ]);
     }
 
