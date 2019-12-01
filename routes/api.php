@@ -2,6 +2,8 @@
 
 Route::middleware('auth:api')->group( function(){
 
+    Route::get('/useremail', 'UserController@userAvatar');
+
     Route::get('/friends', 'TaskController@friends');
 
     Route::get('/tasks', 'TaskController@index');

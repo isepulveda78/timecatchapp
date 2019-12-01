@@ -16,7 +16,7 @@ class ProjectController extends Controller
     {
         $this->authorize('viewAny', Project::class);
 
-        return ProjectResource::collection(request()->user()->projects);
+        return ProjectResource::collection(request()->user()->projects()->paginate(2));
     }
 
     public function store(Project $project, Request $request)

@@ -31,7 +31,7 @@
                       </div>
                     </th>
                     <td>
-                      {{ task.clocked_in | moment("dddd, h:mm:ss a")}}
+                      {{ task.data.clocked_in | moment("dddd, h:mm:ss a")}}
                     </td>
                     <td>
                        {{  task.data.clocked_out | moment("dddd, h:mm:ss a")}}
@@ -69,28 +69,8 @@
               </table>
             </div>
             <div class="card-footer py-4">
-              <nav aria-label="...">
-                <ul class="pagination justify-content-end mb-0">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">
-                      <i class="fas fa-angle-left"></i>
-                      <span class="sr-only">Previous</span>
-                    </a>
-                  </li>
-                  <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">
-                      <i class="fas fa-angle-right"></i>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </li>
-                </ul>
+              <nav aria-label="pagination">
+                <pagination :meta="meta" v-on:pagination:switched="getTasks"></pagination>
               </nav>
             </div>
           </div>
@@ -138,7 +118,7 @@
                                       placeholder="Add friends"
                                       :options="friends"
                                       :close-on-select="false"
-                                      :disabled="true">
+                                      :disabled="false">
 
                                       </multiselect>
                                       <button class="btn btn-danger mt-2" @click.prevent="submit">Save</button>
@@ -170,8 +150,12 @@
 </template>
 
 <script>
+import Pagination from '../components/Pagination';
 export default {
     name: "TaskList",
+    components: {
+      Pagination
+    },
     props: ['row'],
     data ()
     {
@@ -183,7 +167,8 @@ export default {
             tasks: [],
             friends: [],
             new_task: false,
-            delete_task: false
+            delete_task: false,
+            meta: {}
         }
     },
     
@@ -204,7 +189,8 @@ export default {
        submit ()
         {
             axios.patch('/api/task/' + this.new_task.id , {
-               name: this.new_task.name
+               name: this.new_task.name,
+               friends: this.new_task.friends
              }).then(response =>{
                 $("#updateTask").modal("hide");
                 this.resetData();
@@ -254,18 +240,28 @@ export default {
                   this.$router.push('/tasks');
             }
           });
+        },
+        getTasks(page = 1)
+        {
+          axios.get('/api/tasks', {
+            params: {
+              page
+            }
+          })
+        .then(response => {
+            this.tasks = response.data.data;
+           this.meta = response.data.meta;
+        })
+        .catch(error => {
+            if(this.tasks > 0)
+            alert('Unable to fetch tasks.');
+        });
         }
     },
     mounted()
     {  
-        axios.get('/api/tasks')
-        .then(response => {
-            this.tasks = response.data.data;
-        })
-        .catch(error => {
-            if(this.tasks > 0)
-            alert('Unable to fetch contacts.');
-        });
+     
+        this.getTasks();
 
         axios.get('/api/friends')
           .then(response => {

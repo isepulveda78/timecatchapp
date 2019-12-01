@@ -22,26 +22,14 @@
                   <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="media align-items-center">
                       <span class="avatar avatar-sm rounded-circle">
-                        <img alt="Image placeholder" src=""><!-- profile image -->
+                        <v-gravatar :email="useremail"/>
                       </span>
                       <div class="media-body ml-2 d-none d-lg-block">
-                        <span class="mb-0 text-sm  font-weight-bold">Israel Sepulveda</span>
+                        <span class="mb-0 text-sm  font-weight-bold">{{ useremail }}</span>
                       </div>
                     </div>
                   </a>
                   <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
-                    <div class=" dropdown-header noti-title">
-                      <h6 class="text-overflow m-0">Welcome!</h6>
-                    </div>
-                    <a href="#" class="dropdown-item">
-                      <i class="ni ni-single-02"></i>
-                      <span>My profile</span>
-                    </a>
-                    <a href="#" class="dropdown-item">
-                      <i class="ni ni-support-16"></i>
-                      <span>Support</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item">
                       <i class="ni ni-user-run"></i>
                       <span>Logout</span>
@@ -57,6 +45,20 @@
 
 <script>
 export default {
-    name: "SearchNav"
+    name: "SearchNav",
+    data(){
+      return {
+        useremail: ''
+      }
+    },
+    mounted() {
+    axios.get('/api/useremail')
+    .then(response => {
+      this.useremail = response.data.data;
+    })
+    .catch(error => {
+        alert('Unable to fetch user email.');
+    });
+    }
 }
 </script>

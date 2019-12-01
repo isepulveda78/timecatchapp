@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8 ">
+        <div class="header pb-8 pt-5 pt-md-8 ">
             <div class="container-fluid">
                         <div class="card shadow">
                             <div class="card-header border-bottom">
@@ -11,28 +11,22 @@
                                 <TaskInputField id="project" name="project" label="Project" placeholder="Project Name" @update:field="form.project = $event" :data="form.project"/>
                                 <div class="form-group">
                                     <label for="date">Date</label>
-                                    <datetime input-class="form-control" type="date" input-id="date" name="date" v-model="form.date"></datetime>
+                                    <datetime input-class="form-control" format="" type="date" input-id="date" name="date" placeholder="Click for Date" v-model="form.date"></datetime>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="notes">Notes</label>
                                     <textarea class="form-control" id="notes" name="notes" rows="3" v-model="form.notes"></textarea>
                                 </div>
-                                <div class="row">
-                                    <P class="ml-3">Billable:&nbsp;</p>
-                                <div class="form-check mr-5">
-                                        <label class="form-check-label" for="billable">
-                                        <b>Yes</b>
-                                        </label>
-                                        <input class="ml-2 form-check-input" type="checkbox" value="Yes" id="billable" name="billable" v-model="form.billable">
+                              <div class="form-group">
+                                    <label for="billable">Billable</label>
+                                    <select class="form-control" id="billable" v-model="form.billable" required>
+                                        <option disabled value="">Select your option</option>
+                                        <option>Yes</option>
+                                        <option>No</option>
+                                    </select>
                                 </div>
-                                <div class="form-check">
-                                       <label class="form-check-label" for="billable">
-                                        <b>No</b>
-                                        </label>
-                                        <input class="ml-2 form-check-input" type="checkbox" value="No" id="billable" name="billable">
-                                </div>
-                                </div>
+                        
                                 <div class="form-group">
                                     <label for="notes">Add Tasks</label>
                                     <multiselect 
@@ -45,7 +39,6 @@
                                     placeholder="Add Task"
                                     :options="tasks"
                                     :close-on-select="false">
-
                                     </multiselect>
 
                                     <button class="btn btn-danger mt-3" @click.prevent="submitForm">Save</button>

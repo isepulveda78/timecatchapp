@@ -52,9 +52,9 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <a class="dropdown-item" href="#">Action</a>
-                          <a class="dropdown-item" href="#">Another action</a>
-                          <a class="dropdown-item" href="#">Something else here</a>
+                           <a href="#" @click.prevent="loadProjectModal(project.data)" class="dropdown-item" data-toggle="modal" data-target="#updateProject"><i class="fas fa-pencil-alt"></i>Edit</a>
+                           <a class="dropdown-item" href="/projectsummary"><i class="fas fa-plus"></i>Project Summary</a>
+                            <a class="dropdown-item" href="#" @click.prevent="deleteProject(project.data.id)"><i class="far fa-trash-alt"></i>Delete</a>
                         </div>
                       </div>
                     </td>
@@ -64,63 +64,170 @@
             </div>
                    
             <div class="card-footer py-4">
-              <nav aria-label="...">
-                <ul class="pagination justify-content-end mb-0">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">
-                      <i class="fas fa-angle-left"></i>
-                      <span class="sr-only">Previous</span>
-                    </a>
-                  </li>
-                  <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">
-                      <i class="fas fa-angle-right"></i>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </li>
-                </ul>
+              <nav aria-label="pagination">
+               <pagination :meta="meta" v-on:pagination:switched="getProjects"></pagination>
               </nav>
             </div>
           </div>
+
+
+
+    <div class="modal fade" id="updateProject" tabindex="-1" role="dialog" aria-labelledby="updateProject" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+                                        
+      <div class="modal-header border-bottom">
+          <h1 class="modal-title" id="modal-title-default">Edit Project</h1>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+        </div>
+
+            <div class="modal-body">               
+                <div class="form-goup">
+                  <label for="project">Project Name</label>
+                  <input class="form-control" id="project" name="project" label="Project" placeholder="Project Name" v-model="new_project.project"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <datetime input-class="form-control" format="" type="date" input-id="date" name="date" v-model="new_project.date"></datetime>
+                </div>
+                                
+                  <div class="form-group">
+                      <label for="notes">Notes</label>
+                      <textarea class="form-control" id="notes" name="notes" rows="3" v-model="new_project.notes"></textarea>
+                  </div>
+
+                    <div class="form-group">
+                        <label for="billable">Billable</label>
+                        <select class="form-control" id="billable" v-model="new_project.billable" required>
+                        <option disabled value="">Select your option</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                        </select>
+                    </div>
+                        
+                        <div class="form-group">
+                            <label for="notes">Add Tasks</label>
+                            <multiselect 
+                              id="tasks"
+                              :multiple="true"
+                              :hide-selected="true"
+                              label="name"
+                              track-by="id"
+                              v-model="new_project.tasks"
+                              placeholder="Add Task"
+                              :options="tasks"
+                              :close-on-select="false">
+                            </multiselect>
+
+                            <button class="btn btn-danger mt-3" @click.prevent="submit">Save</button>
+                          </div>
+                        </div>
+              </div>
+            </div>
         </div>
       </div>
     </div>
+</div>
 </template>
 
 <script>
+import Pagination from '../components/Pagination';
+
 export default {
     name: 'ProjectList',
-
+    components: {
+      Pagination,
+    },
     data(){
         return {
             project: {
                 project: '',
                 date: '',
                 billable: '',
-                notes: ''
+                notes: '',
+                tasks: []
             },
-            projects: []
+            projects: [],
+            tasks: [],
+            new_project: false,
+            delete_project: false,
+            meta: {}
         }
     },
+    methods: {
 
-    mounted()
-    {
-        axios.get('/api/projects')
+      loadProjectModal(row)
+         {
+            this.new_project = row;
+            $("#updateProject").modal("show");  
+        },
+      submit ()
+        {
+            axios.patch('/api/project/' + this.new_project.id , {
+               project: this.new_project.project,
+               notes: this.new_project.notes,
+               billable: this.new_project.billable,
+               date: this.new_project.date
+
+             }).then(response =>{
+                $("#updateProject").modal("hide");
+                this.resetData();
+            }).catch(errors=>{
+                console.log("Error");
+                this.errors = errors.response.data.errors;
+            });
+        },
+        deleteProject(row)
+        {
+          axios.delete('/api/project/' + row)
+          .then(response => {
+             this.$router.push('/projects');
+          })
+        .catch(error => {
+          alert('Internal Error. Unable to delete project.');
+
+          if(error.response.status === 404)
+              {
+                  this.$router.push('/projects');
+            }
+          });
+        },
+      getProjects(page = 1)
+        {
+          axios.get('/api/projects', {
+            params: {
+              page
+            }
+          })
         .then(response => {
             this.projects = response.data.data;
+           this.meta = response.data.meta;
         })
         .catch(error => {
             if(this.projects > 0)
-            alert('Unable to fetch projects');
+            alert('Unable to fetch prjects.');
+        });
+        }
+    },
+    mounted()
+    {
+      this.getProjects();
+
+          axios.get('/api/project_tasks')
+          .then(response => {
+            this.tasks = response.data.data;     
+        }).catch(error => {
+            this.loading = false;
+
+        if (error.response.status === 404) {
+            console.log("errors");
+            }
         });
     }
     
 }
+
 </script>

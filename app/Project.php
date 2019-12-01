@@ -8,11 +8,6 @@ class Project extends Model
 {
     protected $fillable = ['user_id', 'project', 'billable', 'date', 'notes'];
 
-    protected $casts = [
-        'date' => 'Y:n:d'
-    ];
-
-
     public function path()
     {
         return '/projects/' . $this->id;

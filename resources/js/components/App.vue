@@ -169,6 +169,6 @@ export default {
         return {
             
         }
-    }
+    },
 }
 </script>

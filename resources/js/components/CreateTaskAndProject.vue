@@ -1,7 +1,7 @@
 <template>
     <div>
     <!-- Header -->
-    <div class="header bg-gradient-primary">
+    <div class="header bg-default">
         <div class="container-fluid">
           <div class="header-body">
             <!-- Card stats -->
