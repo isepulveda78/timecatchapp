@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    protected $fillable = ['user_id', 'project', 'billable', 'date', 'notes'];
+    protected $fillable = ['user_id', 'project', 'billable', 'date', 'notes', 'total_hours', 'total_minutes'];
 
     public function path()
     {

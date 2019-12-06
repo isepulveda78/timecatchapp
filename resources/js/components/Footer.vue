@@ -1,7 +1,7 @@
 <template>
     <div>
          <!-- Footer -->
-      <footer class="footer bg-default">
+      <footer class="footer mt-auto py-3 bg-default">
         <div class="container-fluid">
         <div class="row align-items-center justify-content-xl-between">
           <div class="col-xl-6">

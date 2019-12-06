@@ -11,7 +11,7 @@
                                 <TaskInputField id="project" name="project" label="Project" placeholder="Project Name" @update:field="form.project = $event" :data="form.project"/>
                                 <div class="form-group">
                                     <label for="date">Date</label>
-                                    <datetime input-class="form-control" format="" type="date" input-id="date" name="date" placeholder="Click for Date" v-model="form.date"></datetime>
+                                    <flat-pickr class="form-control" v-model="form.date"></flat-pickr>
                                 </div>
                                 
                                 <div class="form-group">
@@ -57,11 +57,14 @@
 <script>
 import TaskInputField from '../components/TaskInputField';
 import ProjectList from '../components/ProjectList';
+import flatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
 export default {
     name: 'ProjectCreate',
     components: {
         TaskInputField,
-        ProjectList
+        ProjectList,
+        flatPickr
     },
 
     data() {

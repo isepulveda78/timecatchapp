@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use Auth;
+use App\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function userAvatar()
+    
+    public function index()
     {
-        $userEmail = Auth::user()->getEmail();
+        $user = Auth::user();
 
         return response()->json([
-            'data' => $userEmail
+            'data' => $user
         ], 200);
     }
+
 }

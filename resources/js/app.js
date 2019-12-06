@@ -2,10 +2,8 @@ import Vue from 'vue';
 import router from './router';
 import App from './components/App';
 import Multiselect from 'vue-multiselect';
-import { Datetime } from 'vue-datetime';
-import 'vue-datetime/dist/vue-datetime.css';
 import Gravatar from 'vue-gravatar';
- 
+import VuePluralize from 'vue-pluralize';
 
 require('./bootstrap');
 
@@ -15,9 +13,9 @@ Vue.component('multiselect', Multiselect);
 
 Vue.use(require('vue-moment'));
 
-Vue.component('datetime', Datetime);
-
 Vue.component('v-gravatar', Gravatar);
+
+Vue.use(VuePluralize);
 
 const app = new Vue({
     el: '#app',

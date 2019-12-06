@@ -15,7 +15,7 @@
                     <th scope="col">Project</th>
                     <th scope="col">Tasks</th>
                     <th scope="col">Billable</th>
-                    <th scope="col">Notes</th>
+                    <th scope="col">Total Time</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
@@ -32,9 +32,9 @@
                       {{ project.data.project }}
                     </td>
                     <td>
-                      <span class="badge badge-dot mr-4">
-                        Tasks
-                      </span>
+                      <a class="bg-info round round-sm text-white" data-toggle="tooltip">
+                        {{ project.data.tasks.length  }}
+                      </a>
                     </td>
                     <td>
                       <div class="badge badge-dot mr-4">
@@ -43,7 +43,7 @@
                     </td>
                     <td>
                       <div class="d-flex align-items-center">
-                        <span class="mr-2">{{ project.data.notes }}</span>
+                        <span class="mr-2">{{ project.data.total_hours + ' ' + 'hr' | pluralize(project.data.total_hours) }} - {{ project.data.total_minutes + ' ' + 'min' | pluralize(project.data.total_minutes) }}</span>
                       </div>
                     </td>
                     <td class="text-right">
@@ -51,9 +51,10 @@
                         <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                        <div class="z-index dropdown-menu dropdown-menu-right dropdown-menu-arrow ">
+                          <a href="" @click.prevent="seeproject(project.data.id)" class="dropdown-item"><i class="fas fa-eye"></i>View Project</a>
                            <a href="#" @click.prevent="loadProjectModal(project.data)" class="dropdown-item" data-toggle="modal" data-target="#updateProject"><i class="fas fa-pencil-alt"></i>Edit</a>
-                           <a class="dropdown-item" href="/projectsummary"><i class="fas fa-plus"></i>Project Summary</a>
+                           <a class="dropdown-item" href="#" @click.prevent="calculateTime(project.data.id)"><i class="fas fa-calculator"></i>Calculate Time</a>
                             <a class="dropdown-item" href="#" @click.prevent="deleteProject(project.data.id)"><i class="far fa-trash-alt"></i>Delete</a>
                         </div>
                       </div>
@@ -91,7 +92,7 @@
 
                 <div class="form-group">
                     <label for="date">Date</label>
-                    <datetime input-class="form-control" format="" type="date" input-id="date" name="date" v-model="new_project.date"></datetime>
+                     <flat-pickr class="form-control" v-model="new_project.date"></flat-pickr>
                 </div>
                                 
                   <div class="form-group">
@@ -135,11 +136,13 @@
 
 <script>
 import Pagination from '../components/Pagination';
-
+import flatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
 export default {
     name: 'ProjectList',
     components: {
       Pagination,
+      flatPickr
     },
     data(){
         return {
@@ -148,7 +151,7 @@ export default {
                 date: '',
                 billable: '',
                 notes: '',
-                tasks: []
+                tasks: ''
             },
             projects: [],
             tasks: [],
@@ -170,7 +173,8 @@ export default {
                project: this.new_project.project,
                notes: this.new_project.notes,
                billable: this.new_project.billable,
-               date: this.new_project.date
+               date: this.new_project.date,
+               tasks: this.new_project.tasks
 
              }).then(response =>{
                 $("#updateProject").modal("hide");
@@ -210,7 +214,23 @@ export default {
             if(this.projects > 0)
             alert('Unable to fetch prjects.');
         });
+        },
+        calculateTime(row)
+        {
+          axios.patch('/api/projects/' + row + '/calculate', {
+            total_hours: this.project.total_hours,
+            total_minutes: this.project.total_minutes
+           }).then(response => {
+                 this.$router.push('/projects');
+            }).catch(errors => {
+                this.errors = errors.reponse.data.errors;
+            });
+        }, 
+        seeproject(row)
+        {
+          return this.$router.push('/projectsummary/' + row);
         }
+
     },
     mounted()
     {

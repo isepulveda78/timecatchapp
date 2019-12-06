@@ -20,6 +20,8 @@ class CreateProjectsTable extends Migration
             $table->text('notes')->nullable();
             $table->string('billable')->nullable();
             $table->string('date')->nullable();
+            $table->string('total_hours')->nullable();
+            $table->string('total_minutes')->nullable();
             $table->timestamps();
         });
     }

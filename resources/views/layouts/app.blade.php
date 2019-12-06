@@ -21,11 +21,10 @@
 
 
 </head>
-    <body>
-
-    <div id="app">
-            @yield('content')
-    </div>
+    <body class="d-flex flex-column h-100">
+        <div id="app" class="flex-shrink-0">
+                @yield('content')
+        </div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>

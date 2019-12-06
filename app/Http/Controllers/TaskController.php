@@ -8,6 +8,7 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Resources\TaskResource;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends Controller
@@ -77,7 +78,6 @@ class TaskController extends Controller
 
     public function clockin(Task $task)
     {
-        $this->authorize('update', $task);
 
         $task->update([
             'clocked_in' => Carbon::now()
@@ -90,7 +90,6 @@ class TaskController extends Controller
 
     public function clockout(Task $task)
     {
-        $this->authorize('update', $task);
         
         $task->update([
             'clocked_out' => Carbon::now()
@@ -108,6 +107,11 @@ class TaskController extends Controller
         ],200);
     }
 
+    public function tasksWithFriends()
+    {
+        return TaskResource::collection(auth()->user()->assigned()->paginate(5));
+    }
+
     private function syncFriendsFromRequest(Task $task, Request $request)
     {   $friends = $this->getFriendsDataFromRequest($request);
         $friends_array = [];
@@ -117,6 +121,7 @@ class TaskController extends Controller
         $task->friends()->sync($friends_array);
      
     }
+    
 
     private function getDataFromRequest(Request $request)
     {
@@ -137,4 +142,14 @@ class TaskController extends Controller
 
         return $data;
     }
+
+    public function getTasks()
+    {
+        $taskCount = request()->user()->tasks()->count();
+
+        return response()->json([
+            'data' => $taskCount
+        ], 200);
+    }
+
 }

@@ -1,8 +1,12 @@
 <?php
 
 Route::middleware('auth:api')->group( function(){
+     /** User's routes */
+    
+     Route::get('/userinfo', 'UserController@index');
 
-    Route::get('/useremail', 'UserController@userAvatar');
+
+     /** Task's routes */
 
     Route::get('/friends', 'TaskController@friends');
 
@@ -20,6 +24,11 @@ Route::middleware('auth:api')->group( function(){
 
     Route::delete('/task/{task}', 'TaskController@destroy');
 
+    Route::get('/tasks/count', 'TaskController@getTasks');
+
+    Route::get('/tasks/tasksWithFriends', 'TaskController@tasksWithFriends');
+
+
 
     /** Project's routes */
 
@@ -35,5 +44,10 @@ Route::middleware('auth:api')->group( function(){
 
     Route::delete('/project/{project}', 'ProjectController@destroy');
 
+    Route::get('/projects/count', 'ProjectController@getProjects');
+
+    Route::patch('/projects/{project}/calculate', 'ProjectController@calculateTime');
+
+    Route::get('/projects/tasksWithFriends', 'ProjectController@tasksWithFriends');
 
 }); 

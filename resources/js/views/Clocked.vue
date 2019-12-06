@@ -1,0 +1,81 @@
+<template>
+    <div>
+        <div class="header bg-default pb-8 pt-5 pt-md-8"> 
+    <div class="container-fluid mt-5">
+
+    <div class="card shadow">
+        <div class="card-header border-bttom">
+            <h3 class="mb-0">Your clocked hours and dates.</h3>
+            </div>
+            <div class="row mt-2 p-5">
+                <div class="col-sm-6">
+                <div class="card bg-gradient-default">
+                    <!-- Card body -->
+                    <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0 text-white">Clocked In Time</h5>
+                             <p class="mt-3 mb-0 text-sm">
+                                <span class="text-white mr-2">{{ task.clocked_in | moment("dddd, MMMM Do YYYY, h:mm:ss a")}}</span>
+                            </p>
+                        </div>
+                        <div class="col-auto">
+                        <div class="icon icon-shape bg-gradient-default text-white border rounded-circle shadow">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+                <div class="col-sm-6">
+                <div class="card bg-gradient-default">
+                    <!-- Card body -->
+                    <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0 text-white">Clocked In Time</h5>
+                             <p class="mt-3 mb-0 text-sm">
+                                <span class="text-white mr-2">{{ task.clocked_out | moment("dddd, MMMM Do YYYY, h:mm:ss a")}}</span>
+                            </p>
+                        </div>
+                        <div class="col-auto">
+                        <div class="icon icon-shape bg-gradient-default text-white border rounded-circle shadow">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</template>
+
+<script>
+export default {
+    name: 'Clocked',
+    data()
+    {
+        return{
+            task: ''
+        }
+    },
+    mounted()
+    {
+        axios.get('/api/task/' + this.$route.params.id)
+        .then(response => {
+            this.task = response.data.data;
+        })
+        .catch(error => {
+           if (error.response.status === 404) {
+            console.log("errors");
+            }
+        });
+    }
+}
+</script>

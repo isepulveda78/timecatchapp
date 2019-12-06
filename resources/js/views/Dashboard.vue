@@ -1,22 +1,19 @@
 <template>
-<div class="header bg-default pb-8 pt-5 pt-md-8 "> 
+<div class="header bg-default pb-8 pt-5 pt-md-8 ">
     <CreateTaskAndProject />
-    <ProjectList />
-    <TaskList />      
+    <TasksWithFriends />  
 </div>
 </template>
 
 <script>
+import TasksWithFriends from '../components/TasksWithFriends';
 import CreateTaskAndProject from '../components/CreateTaskAndProject';
-import TaskList from '../components/TaskList';
-import ProjectList from '../components/ProjectList';
 export default {
     name: "Dashboard",
 
     components: {
         CreateTaskAndProject,
-        TaskList,
-        ProjectList
+        TasksWithFriends
     }
 }
 </script>

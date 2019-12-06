@@ -10,11 +10,11 @@
                             <div class="row">
                             <div class="col">
                                 <h5 class="card-title text-uppercase text-muted mb-0">Tasks</h5>
-                                <span class="h2 font-weight-bold mb-0">2</span>
+                                <span class="h2 font-weight-bold mb-0">{{ taskcount }}</span>
                             </div>
                             <div class="col-auto">
                                 <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
-                                    <a href="/task/create"><i class="fas fa-plus"></i></a>
+                                    <a href="/task/create" class="text-white"><i class="fas fa-plus"></i></a>
                                 </div>
                             </div>
                             </div>
@@ -35,6 +35,22 @@ export default {
     name: 'TaskIndex',
     components: {
         TaskList
+    },
+    data(){
+        return {
+            taskcount: '',
+        }
+    },
+    mounted(){
+        axios.get('/api/tasks/count')
+        .then(response => {
+            this.taskcount = response.data.data;
+        })
+        .catch(error => {
+            if (error.response.status === 404) {
+                    console.log("errors");
+            }
+        });
     }
     
 }

@@ -26,7 +26,7 @@ class ProjectController extends Controller
         $project = request()->user()->projects()->create($this->validateData());
  
         $this->syncTasksandProjects($project,$request);
- 
+
         return (new ProjectResource($project))
         ->response()
         ->setStatusCode(Response::HTTP_CREATED);
@@ -44,6 +44,8 @@ class ProjectController extends Controller
         $this->authorize('update', $project);
 
         $project->update($this->validateData());
+
+        $this->syncTasksandProjects($project,$request);
 
         return (New ProjectResource($project))
         ->response()
@@ -84,7 +86,7 @@ class ProjectController extends Controller
             'project',
             'notes',
             'billable',
-            'date',
+            'date'
         ]);
 
         return $data;
@@ -99,13 +101,41 @@ class ProjectController extends Controller
         return $data;
     }
 
+
     public function validateData()
     {
         return request()->validate([
             'project' => 'required',
             'billable' => 'nullable',
             'date' => 'nullable',
-            'notes' => 'nullable'
+            'notes' => 'nullable',
+            'total_hours' => 'nullable',
+            'total_minutes' => 'nullable'
         ]);
     }
+
+    public function getProjects()
+    {
+        $projectCount = request()->user()->projects()->count();
+
+        return response()->json([
+            'data' => $projectCount
+        ], 200);
+    }
+
+    public function calculateTime(Project $project)
+    {
+        $this->authorize('update', $project);
+
+        $project->update([
+            'total_hours' => $project->getTotalHoursAttribute(),
+            'total_minutes' => $project->getTotalMinutesAttribute() 
+        ]);
+        
+        return (new ProjectResource($project))
+        ->response()
+        ->setStatusCode(Response::HTTP_OK);
+    }
+
+
 }

@@ -22,10 +22,10 @@
                   <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="media align-items-center">
                       <span class="avatar avatar-sm rounded-circle">
-                        <v-gravatar :email="useremail"/>
+                        <v-gravatar :email="user.email"/>
                       </span>
                       <div class="media-body ml-2 d-none d-lg-block">
-                        <span class="mb-0 text-sm  font-weight-bold">{{ useremail }}</span>
+                        <span class="mb-0 text-sm  font-weight-bold">{{ user.email }}</span>
                       </div>
                     </div>
                   </a>
@@ -48,17 +48,19 @@ export default {
     name: "SearchNav",
     data(){
       return {
-        useremail: ''
+        user: ''
       }
     },
     mounted() {
-    axios.get('/api/useremail')
-    .then(response => {
-      this.useremail = response.data.data;
-    })
-    .catch(error => {
-        alert('Unable to fetch user email.');
-    });
+      axios.get('/api/userinfo')
+        .then(response => {
+            this.user = response.data.data
+        })
+        .catch(error => {
+             if (error.response.status === 404) {
+            console.log("errors");
+            }
+        });
     }
 }
 </script>

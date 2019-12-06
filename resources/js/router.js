@@ -6,6 +6,9 @@ import TaskCreate from "./views/TaskCreate";
 import ProjectIndex from "./views/ProjectIndex";
 import TaskIndex from "./views/TaskIndex";
 import ProjectSummary from "./views/ProjectSummary";
+import Clocked from "./views/Clocked";
+import User from "./views/User";
+
 Vue.use(VueRouter);
 
 export default new VueRouter({
@@ -26,8 +29,15 @@ export default new VueRouter({
             path: '/tasks', component: TaskIndex
         },
         {
-            path: '/projectsummary', component: ProjectSummary
+            path: '/projectsummary/:id', component: ProjectSummary
+        },
+        {
+            path: '/clocked/:id', component: Clocked
+        },
+        {
+            path: '/user', component: User
         }
+
     ],
     mode: 'history'
 });

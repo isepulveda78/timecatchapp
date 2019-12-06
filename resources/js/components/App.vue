@@ -119,7 +119,7 @@
               <!-- Navigation -->
               <ul class="navbar-nav mb-md-3">
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="/user">
                       <i class="far fa-user"></i> Profile
                   </a>
                 </li>

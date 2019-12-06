@@ -21,7 +21,9 @@ class ProjectResource extends JsonResource
                 'notes' => $this->notes,
                 'billable' => $this->billable,
                 'date' => $this->date,
-                'tasks' => $this->tasks
+                'tasks' => $this->tasks,
+                'total_hours' => $this->total_hours,
+                'total_minutes' => $this->total_minutes,
             ],
             'links' => [
                 'self' => $this->path(),

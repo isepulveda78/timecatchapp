@@ -1,5 +1,5 @@
 <template>
-    <div>
+     <div>
 
     <div class="container-fluid mt-5">
       <!-- Table -->
@@ -7,7 +7,7 @@
         <div class="col">
           <div class="card shadow">
             <div class="card-header border-0">
-              <h3 class="mb-0">Tasks</h3>
+              <h3 class="mb-0">Assigned Tasks</h3>
             </div>
             <div class="table-responsive">
               <table class="table align-items-center table-flush">
@@ -16,13 +16,12 @@
                     <th scope="col">Task</th>
                     <th scope="col">Time Clocked In</th>
                     <th scope="col">Time Clocked Out</th>
-                    <th scope="col">Users</th>
                     <th scope="col">Completion</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody >
-                  <tr v-for="task in tasks" :key="task.id" :row="task">
+                  <tr v-for="task in tasksWithFriends" :key="task.id" :row="task">
                     <th scope="row">
                       <div class="media align-items-center">
                         <div class="media-body">
@@ -35,11 +34,6 @@
                     </td>
                     <td>
                        {{  task.data.clocked_out | moment("dddd, h:mm:ss a")}}
-                    </td>
-                    <td>
-                        <a class="bg-info round round-sm text-white" data-toggle="tooltip" >
-                          {{ task.data.friends.length }}
-                        </a>
                     </td>
                     <td v-if="task.data.clocked_in && task.data.clocked_out">
                        <span class="badge badge-dot mr-4">
@@ -57,8 +51,7 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                          <a href="#" @click.prevent="loadUpdateModal(task.data)" class="dropdown-item" data-toggle="modal" data-target="#updateTask"><i class="fas fa-pencil-alt"></i>Edit</a>
-                          <a class="dropdown-item" href="#" @click.prevent="deleteTask(task.data.id)"><i class="far fa-trash-alt"></i>Delete</a>
+                          <a href="#" @click.prevent="loadUpdateModal(task.data)" class="dropdown-item" data-toggle="modal" data-target="#updateTask"><i class="fas fa-clock"></i>Clock In - Clock Out</a>
                         </div>
                       </div>
                     </td>
@@ -81,7 +74,7 @@
                     <div class="modal-content">
                                         
                         <div class="modal-header border-bottom">
-                            <h1 class="modal-title" id="modal-title-default">Edit Task</h1>
+                            <h1 class="modal-title" id="modal-title-default">Clock In - Clock Out</h1>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
@@ -90,33 +83,33 @@
                             <div class="modal-body">
                                    <div class="form-group">
                                         <label for="name">Name</label>
-                                        <input v-model="new_task.name" id="name" name="name" type="text" class="form-control" autocomplete="off">
+                                        <input v-model="show.name" id="name" name="name" type="text" class="form-control" autocomplete="off" disabled>
                                     </div>
 
                                     <div class="form-group">
                                        <label for="clocked_in">Clocked In</label>
-                                       <input v-model="new_task.clocked_in" id="clocked_in" type="text" placeholder="Need to clock in" class="form-control mt-2" autocomplete="off" disabled>
+                                       <input v-model="show.clocked_in" id="clocked_in" type="text" placeholder="Need to clock in" class="form-control mt-2" autocomplete="off" disabled>
                                     </div>
 
                                     <div class="form-group">
                                        <label for="clocked_in">Clocked Out</label>
-                                        <input v-model="new_task.clocked_out" id="clocked_out" type="text" placeholder="Need to clock out" class="form-control mt-2" autocomplete="off" disabled>
+                                        <input v-model="show.clocked_out" id="clocked_out" type="text" placeholder="Need to clock out" class="form-control mt-2" autocomplete="off" disabled>
                                     </div>
                               
                                   <div class="form-group">
                                   <label for="friends">Users in Task</label>
-                                  <div v-if="formEditMode(new_task)">
+                                  <div>
                                       <multiselect 
                                       id="friends"
                                       :multiple="true"
                                       :hide-selected="true"
                                       label="name"
                                       track-by="id"
-                                      v-model="new_task.friends"
+                                      v-model="show.friends"
                                       placeholder="Add friends"
                                       :options="friends"
                                       :close-on-select="false"
-                                      :disabled="false">
+                                      :disabled="true">
 
                                       </multiselect>
                                       <button class="btn btn-danger mt-2" @click.prevent="submit">Save</button>
@@ -126,14 +119,14 @@
                                   <div class="row">
                                     <div class="col-sm-12">
                                       <div class="modal-footer border-top">
-                                        <div v-if="!new_task.clocked_in">
-                                            <button class="btn btn-default btn-sm mt-1" @click.prevent="clockIn(new_task.id)">Clock In</button>&nbsp;
+                                        <div v-if="!show.clocked_in">
+                                            <button class="btn btn-default btn-sm mt-1" @click.prevent="clockInFriend(show.id)">Clock In</button>&nbsp;
                                         </div>
-                                        <div v-if="new_task.clocked_in && !new_task.clocked_out > 0">
-                                           <button class="btn btn-default btn-sm mt-1" @click.prevent="clockOut(new_task.id)">Clock Out</button>
+                                        <div v-if="show.clocked_in && !show.clocked_out > 0">
+                                           <button class="btn btn-default btn-sm mt-1" @click.prevent="clockOutFriend(show.id)">Clock Out</button>
                                            
                                         </div>
-                                        <div v-if="new_task.clocked_in && new_task.clocked_out">
+                                        <div v-if="show.clocked_in && show.clocked_out">
                                             <h6 class="modal-title badge badge-success">Completed</h6>
                                         </div>
                                       </div>
@@ -144,122 +137,79 @@
                     </div>
          </div>
 </div>
-  
 </template>
 
 <script>
 import Pagination from '../components/Pagination';
 export default {
-    name: "TaskList",
+    name: 'TasksWithFriends',
     components: {
       Pagination
     },
-    props: ['row'],
-    data ()
-    {
+    data() {
         return {
             task: {
-            name: '',
-            friends: '',
-            clocked_in: '',
-            clocked_out: '',
+                name: '',
+                friends: '',
+                clocked_in: '',
+                clocked_out: '',
             },
-            tasks: [],
             friends: [],
-            new_task: false,
-            delete_task: false,
+            show: false,
             meta: {},
+            tasksWithFriends: {},
             clocked_in: '',
             clocked_out: '',
         }
-  },
+    },
     methods: {
-        loadUpdateModal(row)
-         {
-            this.new_task = row;
-            $("#updateTask").modal("show");  
-        },
-        formEditMode(task) {
-            if(task) {
-              return task.name.length > 0;
-            } else {
-              return false;
-            }
-            
-        },
-       submit ()
+    loadUpdateModal(row)
+    {
+        this.show = row;
+        $("#updateTask").modal("show");  
+    },
+    getTasks(page = 1)
         {
-            axios.patch('/api/task/' + this.new_task.id , {
-               name: this.new_task.name,
-               friends: this.new_task.friends
-             }).then(response =>{
-                $("#updateTask").modal("hide");
-                this.resetData();
-            }).catch(errors=>{
-                console.log("Error");
-                this.errors = errors.response.data.errors;
-            });
-        },
-        clockIn ()
-        {
-            axios.patch('/api/task/' + this.new_task.id + '/clockin', {
-              clocked_in: this.new_task.clocked_in
-            }).then(response => {
-                $("#updateTask").modal("hide");
-            }).catch(errors => {
-                this.errors = errors.reponse.data.errors;
-            });
-        },
-        clockOut ()
-        {
-            axios.patch('/api/task/' + this.new_task.id + '/clockout', {
-              clocked_out: this.new_task.clocked_out
-            }).then(response => {
-                $("#updateTask").modal("hide");  
-            })
-            .catch(errors => {
-                this.errors = errors.reponse.data.errors;
-            });
-        },
-        resetData(){
-            this.task.name = '';
-            this.task.friends = '';
-        },
-        deleteTask(row)
-        {
-          axios.delete('/api/task/' + row)
-          .then(response => {
-             this.$router.push('/tasks');
-          })
-        .catch(error => {
-          alert('Internal Error. Unable to delete task.');
-
-          if(error.response.status === 404)
-              {
-                  this.$router.push('/tasks');
-            }
-          });
-        },
-        getTasks(page = 1)
-        {
-          axios.get('/api/tasks', {
+          axios.get('/api/tasks/tasksWithFriends', {
             params: {
               page
             }
           })
         .then(response => {
-            this.tasks = response.data.data;
-           this.meta = response.data.meta;
+           this.tasksWithFriends = response.data.data;
+            this.meta = response.data.meta;
         })
         .catch(error => {
             if(this.tasks > 0)
             alert('Unable to fetch tasks.');
         });
+        },
+        clockInFriend (row)
+        {
+            axios.patch('/api/task/' + this.show.id + '/clockin', {
+                clocked_in: this.show.clocked_in
+            }).then(response => {
+                $("#updateTask").modal("hide");
+                 this.$router.push('/clocked/' + row);
+            }).catch(errors => {
+                this.errors = errors.reponse;
+            });
+        },
+        clockOutFriend (row)
+        {
+            axios.patch('/api/task/' + this.show.id + '/clockout', {
+                clocked_out: this.show.clocked_out
+            }).then(response => {
+                $("#updateTask").modal("hide");
+                 this.$router.push('/clocked/' + row);  
+            })
+            .catch(errors => {
+                this.errors = errors.reponse;
+            });
         }
-    },
-    mounted()
-    {  
-     
+     },
+
+    mounted(){
         this.getTasks();
 
         axios.get('/api/friends')
@@ -276,6 +226,5 @@ export default {
             }
         });
     }
- 
 }
 </script>

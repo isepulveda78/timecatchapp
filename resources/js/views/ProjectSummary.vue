@@ -4,9 +4,9 @@
 
     <div class="card shadow">
         <div class="card-header border-bttom">
-            <h3 class="mb-0">Build TimeCatch</h3>
+            <h3 class="mb-0">Project Name: {{ project.project }}</h3>
             </div>
-            <div class="row mt-2 p-5">
+            <div class="row p-5">
                 <div class="col-sm-6">
                 <div class="card bg-gradient-default">
                     <!-- Card body -->
@@ -15,8 +15,8 @@
                         <div class="col">
                         <h5 class="card-title text-uppercase text-muted mb-0 text-white">Total Time</h5>
                              <p class="mt-3 mb-0 text-sm">
-                                <span class="text-white mr-2">3 hours</span>
-                                <span class="text-nowrap text-light">3 minutes</span>
+                                <span class="text-white mr-2">{{ project.total_hours + ' ' + 'hr' | pluralize(project.total_hours) }}</span>
+                                <span class="text-nowrap text-light">{{ project.total_minutes + ' ' + 'min' | pluralize(project.total_minutes) }}</span>
                             </p>
                         </div>
                         <div class="col-auto">
@@ -35,7 +35,7 @@
                         <div class="col">
                         <h5 class="card-title text-uppercase text-muted mb-0 text-white">Billable</h5>
                             <p class="mt-3 mb-0 text-sm">
-                                <span class="text-white mr-2">Yes</span>
+                                <span class="text-white mr-2">{{ project.billable }}</span>
                             </p>
                         </div>
                         <div class="col-auto">
@@ -57,7 +57,7 @@
                         <div class="col">
                         <h5 class="card-title text-uppercase text-muted mb-0 text-white">Date</h5>
                             <p class="mt-3 mb-0 text-sm">
-                                <span class="text-white mr-2">July 12, 1978</span>
+                                <span class="text-white mr-2">{{ project.date | moment("dddd, h:mm:ss a") }}</span>
                             </p>
                         </div>
                         <div class="col-auto">
@@ -97,6 +97,24 @@
 
 <script>
 export default {
-    name: 'ProjectSummary'
+    name: 'ProjectSummary',
+    data()
+    {
+        return {
+            project: '',
+        }
+    },
+    mounted ()
+    {
+         axios.get('/api/project/' + this.$route.params.id)
+        .then(response => {
+            this.project = response.data.data;
+        })
+        .catch(error => {
+           if (error.response.status === 404) {
+            console.log("errors");
+            }
+        });
+    }
 }
 </script>

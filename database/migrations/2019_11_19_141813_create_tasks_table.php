@@ -17,10 +17,8 @@ class CreateTasksTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->nullable();
             $table->Biginteger('user_id')->unsigned();
-            $table->date('day')->nullable();
             $table->dateTime('clocked_in')->nullable();
             $table->dateTime('clocked_out')->nullable();
-            $table->string('total_time')->nullable();
             $table->timestamps();
         });
     }
