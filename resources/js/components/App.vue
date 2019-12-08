@@ -54,7 +54,7 @@
                   </a>
                   <div class="dropdown-divider"></div>
                   <a href="#!" class="dropdown-item">
-                    <i class="ni ni-user-run"></i>
+                    <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
                   </a>
                 </div>
@@ -115,12 +115,11 @@
               <!-- Divider -->
               <hr class="my-3">
               <!-- Heading -->
-              <h6 class="navbar-heading text-muted">Edit Profile</h6>
               <!-- Navigation -->
               <ul class="navbar-nav mb-md-3">
                 <li class="nav-item">
-                  <a class="nav-link" href="/user">
-                      <i class="far fa-user"></i> Profile
+                  <a class="nav-link" href="">
+                      <i class="fas fa-sign-out-alt"></i> Log Out
                   </a>
                 </li>
               </ul>

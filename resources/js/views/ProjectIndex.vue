@@ -13,7 +13,7 @@
                                 <span class="h2 font-weight-bold mb-0">{{ projectcount }}</span>
                             </div>
                             <div class="col-auto">
-                                <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                                <div class="icon icon-shape bg-danger text-white rounded-circle shadow" data-toggle="tooltip" data-placement="top" title="Create Project">
                                     <a href="/project/create" class="text-white"><i class="fas fa-plus"></i></a>
                                 </div>
                             </div>

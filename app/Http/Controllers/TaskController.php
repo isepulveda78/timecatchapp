@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\TaskResource;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
+use App\Notifications\AddUserToTask;
+use Illuminate\Support\Facades\Notification;
 
 class TaskController extends Controller
 {
@@ -54,6 +56,8 @@ class TaskController extends Controller
         $task->update($this->validateData());
 
         $this->syncFriendsFromRequest($task,$request);
+
+       
 
         return (new TaskResource($task))
         ->response()
@@ -119,9 +123,7 @@ class TaskController extends Controller
             array_push($friends_array,$friend_data['id']);
         }
         $task->friends()->sync($friends_array);
-     
     }
-    
 
     private function getDataFromRequest(Request $request)
     {

@@ -8,7 +8,7 @@
                         </div>
                         <div class="media-body">
                             <form  class="p-3" autocomplete="off">
-                                <TaskInputField id="name" name="name" label="Task Name" placeholder="Task Name" @update:field="form.name = $event" :data="form.name"/>
+                                <InputField id="name" name="name" label="Task Name" placeholder="Task Name" @update:field="form.name = $event" :data="form.name"/>
                                 <div v-if="formEditMode">
                                     <multiselect 
                                     id="friends"
@@ -29,7 +29,6 @@
                         </div>
                     </div>
                 </div>
-             <TaskList />
         </div>  
 </div>
 
@@ -37,14 +36,12 @@
 </template>
 
 <script>
-import TaskInputField from '../components/TaskInputField';
-import TaskList from '../components/TaskList';
+import InputField from '../components/InputField';
 export default {
     name: 'TaskEdit',
 
     components: {
-        TaskInputField,
-        TaskList
+        InputField,
     },
 
     data: function()

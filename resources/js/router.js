@@ -7,7 +7,7 @@ import ProjectIndex from "./views/ProjectIndex";
 import TaskIndex from "./views/TaskIndex";
 import ProjectSummary from "./views/ProjectSummary";
 import Clocked from "./views/Clocked";
-import User from "./views/User";
+import User from "./components/User";
 
 Vue.use(VueRouter);
 

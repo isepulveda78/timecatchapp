@@ -1,10 +1,6 @@
 <template>
      <div>
-
-    <div class="container-fluid mt-5">
       <!-- Table -->
-      <div class="row">
-        <div class="col">
           <div class="card shadow">
             <div class="card-header border-0">
               <h3 class="mb-0">Assigned Tasks</h3>
@@ -51,6 +47,7 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                          <a href="#" @click.prevent="viewTask(task.data.id)" class="dropdown-item"><i class="fas fa-eye"></i>View</a>
                           <a href="#" @click.prevent="loadUpdateModal(task.data)" class="dropdown-item" data-toggle="modal" data-target="#updateTask"><i class="fas fa-clock"></i>Clock In - Clock Out</a>
                         </div>
                       </div>
@@ -65,8 +62,8 @@
               </nav>
             </div>
           </div>
-        </div>
-      </div>
+        
+      
     
 
                     <div class="modal fade" id="updateTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -136,7 +133,7 @@
                         </div>
                     </div>
          </div>
-</div>
+
 </template>
 
 <script>
@@ -206,6 +203,10 @@ export default {
             .catch(errors => {
                 this.errors = errors.reponse;
             });
+        },
+        viewTask(row)
+        {
+          return this.$router.push('/clocked/' + row);
         }
      },
 

@@ -10,7 +10,7 @@
 
 <script>
 export default {
-    name: "TaskInputField",
+    name: "InputField",
     props: [
         'name', 'label', 'placeholder', 'errors', 'data'
     ],

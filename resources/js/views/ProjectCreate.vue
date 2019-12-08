@@ -8,7 +8,7 @@
                             </div>
                             <div class="media-body">
                             <form  class="p-3" autocomplete="off" >
-                                <TaskInputField id="project" name="project" label="Project" placeholder="Project Name" @update:field="form.project = $event" :data="form.project"/>
+                                <InputField id="project" name="project" label="Project" placeholder="Project Name" @update:field="form.project = $event" :data="form.project"/>
                                 <div class="form-group">
                                     <label for="date">Date</label>
                                     <flat-pickr class="form-control" v-model="form.date"></flat-pickr>
@@ -49,21 +49,18 @@
                         </div>
                         </div>
             </div>
-            <ProjectList />
         </div>
     </div>
 </template>
 
 <script>
-import TaskInputField from '../components/TaskInputField';
-import ProjectList from '../components/ProjectList';
+import InputField from '../components/InputField';
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 export default {
     name: 'ProjectCreate',
     components: {
-        TaskInputField,
-        ProjectList,
+        InputField,
         flatPickr
     },
 

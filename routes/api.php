@@ -5,6 +5,10 @@ Route::middleware('auth:api')->group( function(){
     
      Route::get('/userinfo', 'UserController@index');
 
+     Route::patch('/user/{user}', 'UserController@update');
+
+     Route::delete('/user/{user}', 'UserController@destroy');
+
 
      /** Task's routes */
 

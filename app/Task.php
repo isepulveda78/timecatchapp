@@ -2,10 +2,12 @@
 
 namespace App;
 use Carbon\Carbon;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
+    use Notifiable;
     protected $fillable =  [ 'name', 'user_id', 'clocked_in', 'clocked_out'];
 
     protected $casts = [
