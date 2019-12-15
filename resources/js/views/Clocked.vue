@@ -52,7 +52,7 @@
             </div>
         </div>
     </div>
-</div>
+        </div>
     </div>
 </template>
 
@@ -62,20 +62,19 @@ export default {
     data()
     {
         return{
-            task: ''
+            task: '',
         }
     },
     mounted()
     {
-        axios.get('/api/task/' + this.$route.params.id)
+      axios.get('/api/task/taskWithFriends/' + this.$route.params.id)
         .then(response => {
-            this.task = response.data.data;
+           this.task = response.data.data;
         })
         .catch(error => {
-           if (error.response.status === 404) {
-            console.log("errors");
-            }
+            if(this.tasks > 0)
+            alert('Unable to fetch tasks.');
         });
     }
-}
+  }
 </script>

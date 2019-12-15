@@ -1,9 +1,19 @@
 <?php
 
 Route::middleware('auth:api')->group( function(){
+    /** Task Messages */
+    Route::post('/postmessage', 'TaskMessageController@postMessage');
+
+    Route::post('/like', 'TaskMessageController@getLike');
+
+
      /** User's routes */
     
      Route::get('/userinfo', 'UserController@index');
+
+     Route::get('/user_tasks/{user}', 'UserController@tasksCount');
+
+     Route::get('/user/{user}', 'UserController@show');
 
      Route::patch('/user/{user}', 'UserController@update');
 
@@ -32,7 +42,7 @@ Route::middleware('auth:api')->group( function(){
 
     Route::get('/tasks/tasksWithFriends', 'TaskController@tasksWithFriends');
 
-
+    Route::get('/task/taskWithFriends/{task}', 'TaskController@taskWithFriends');
 
     /** Project's routes */
 

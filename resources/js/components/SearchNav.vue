@@ -6,13 +6,13 @@
               <!-- Brand -->
               <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="#">Dashboard</a>
               <!-- Form -->
-              <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+              <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto" @submit.prevent="send()">
                 <div class="form-group mb-0">
                   <div class="input-group input-group-alternative">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-search"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Search" type="text">
+                    <input class="form-control" id="users" name="users" placeholder="Search" type="text">
                   </div>
                 </div>
               </form>
@@ -30,7 +30,7 @@
                     </div>
                   </a>
                   <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
-                    <a href="#" class="dropdown-item">
+                    <a href="/logout" class="dropdown-item">
                       <i class="ni ni-user-run"></i>
                       <span>Logout</span>
                     </a>
@@ -44,11 +44,18 @@
 </template>
 
 <script>
+import autocomplete from 'autocomplete.js';
+import algolia from 'algoliasearch';
 export default {
     name: "SearchNav",
     data(){
       return {
         user: ''
+      }
+    },
+    methods: {
+      send(){
+        return this.$router.push('/user/' + user.id);
       }
     },
     mounted() {
@@ -61,6 +68,24 @@ export default {
             console.log("errors");
             }
         });
+
+            const index = algolia('R7YZ9JNJ1W', '8bc85169f580ea2a36ee094c2a5718f1').initIndex('users');
+
+            autocomplete('#users', {
+                hint: true
+            }, {
+                source: autocomplete.sources.hits(index, {hitsPerPage: 10}),
+                displayKey: 'name',
+                templates: {
+                    suggestion(suggestion){
+                        return '<span><a href="/user/' + suggestion.id + '"><img src="' + suggestion.avatar + '" alt="Gravatar of' + suggestion.name + '" class="mr-2">' 
+                        + suggestion.name  + '</a></span>';
+                    },
+                     empty: '<div class="aa-empty">No people found.</div>'
+                }
+            }).on('autocomplete:selected', function(suggestion){
+                return this.$router.push('/user/' + suggestion.id);
+            });
     }
 }
 </script>

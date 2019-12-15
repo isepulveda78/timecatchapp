@@ -36,7 +36,6 @@ class RouteServiceProvider extends ServiceProvider
 
             return Project::with('tasks')->where($project->getRouteKeyName(), $value)->first();
         });
-
         parent::boot();
     }
 

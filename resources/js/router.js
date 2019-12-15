@@ -8,6 +8,8 @@ import TaskIndex from "./views/TaskIndex";
 import ProjectSummary from "./views/ProjectSummary";
 import Clocked from "./views/Clocked";
 import User from "./components/User";
+import Profile from "./views/Profile";
+import Logout from "./Actions/Logout";
 
 Vue.use(VueRouter);
 
@@ -36,6 +38,12 @@ export default new VueRouter({
         },
         {
             path: '/user', component: User
+        },
+        {
+            path: '/user/:id', component: Profile
+        },
+        {
+            path: '/logout', component: Logout
         }
 
     ],

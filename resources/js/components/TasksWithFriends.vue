@@ -207,6 +207,7 @@ export default {
         viewTask(row)
         {
           return this.$router.push('/clocked/' + row);
+
         }
      },
 

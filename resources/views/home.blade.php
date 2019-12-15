@@ -18,7 +18,7 @@
    <nav id="navbar-main" class="navbar navbar-horizontal navbar-main navbar-expand-lg navbar-dark bg-primary">
      <div class="container">
        <a class="navbar-brand" href="{{ route('home') }}">
-         <img src="img/logo/timeCatchLogo.png"">&nbsp;TimeCatch
+         <img src="img/logo/timeCatchLogo.png" class="img-fluid">&nbsp;TimeCatch
        </a>
        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span>
@@ -65,7 +65,7 @@
            @endif
             @else
            <li class="nav-item">
-             <a href="{{ route('tasks') }}" class="nav-link">
+             <a href="/dashboard" class="nav-link">
                <span class="nav-link-inner--text">Dashboard</span>
              </a>
            </li>

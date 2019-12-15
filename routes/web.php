@@ -2,6 +2,10 @@
 
 Auth::routes(['verify' => true ]);
 
+Route::get('/logout-manual', function () {
+    request()->session()->invalidate();
+});
+
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/tasks', 'TaskController@alltasks')->name('tasks');

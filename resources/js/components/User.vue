@@ -22,7 +22,7 @@
                     {{ user.name }}
                   </h3>
                   <div class="h5 font-weight-300">
-                    <i class="ni location_pin mr-2"></i>{{ user.location}}
+                    <i class="ni location_pin mr-2"></i>{{ user.location }}
                   </div>
                   <div class="h5 mt-4">
                     <i class="ni business_briefcase-24 mr-2"></i>{{ user.title }}
@@ -38,47 +38,51 @@
         
 
     <!-- Modal -->
-<div class="modal fade" id="updateUser" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="userinfo">User Info</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+      <div class="modal fade" id="updateUser" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header border-bottom">
+                <h1 class="modal-title" id="modal-title-default">Edit Profile</h1>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">×</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <form autocomplete="off">
+                  <div class="form-group">
+                      <label for="Name">Name</label>
+                      <input type="text" class="form-control" id="name" v-model="new_info.name" disabled>
+                  </div>
+                  <div class="form-group">
+                      <label for="email">Email</label>
+                      <input type="text" class="form-control" id="email" v-model="new_info.email" disabled>
+                  </div>
+                  <div class="form-group">
+                      <label for="location">Location</label>
+                      <input type="text" class="form-control" id="location" placeholder="Example: Raleigh, North Carolina" v-model="new_info.location">
+                  </div>
+                  <div class="form-group">
+                      <label for="title">Title</label>
+                      <input type="text" class="form-control" id="title" placeholder="Example: Full Stack Web Developer" v-model="new_info.title">
+                  </div>
+                  <div class="form-group">
+                      <label for="education">Education</label>
+                      <input type="text" class="form-control" id="education" placeholder="Example: University of North Carolina" v-model="new_info.education">
+                  </div>
+                  <div class="form-group">
+                      <label for="about">About</label>
+                      <input type="text" class="form-control" id="about" placeholder="Short Description of Yourself" v-model="new_info.about">
+                  </div>
+                    <button type="button" class="btn btn-danger mt-2" @click.prevent="updateUser(user.id)">Save changes</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="modal-body">
-          <form autocomplete="off">
-            <div class="form-group">
-                <label for="Name">Name</label>
-                <input type="text" class="form-control" id="name" v-model="new_info.name" disabled>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="text" class="form-control" id="email" v-model="new_info.email" disabled>
-            </div>
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" class="form-control" id="title" placeholder="Example: Full Stack Web Developer" v-model="new_info.title">
-            </div>
-            <div class="form-group">
-                <label for="education">Education</label>
-                <input type="text" class="form-control" id="education" placeholder="Example: University of North Carolina" v-model="new_info.education">
-            </div>
-            <div class="form-group">
-                <label for="about">About</label>
-                <input type="text" class="form-control" id="about" placeholder="Short Description of Yourself" v-model="new_info.about">
-            </div>
-               <button type="button" class="btn btn-danger mt-2" @click.prevent="updateUser(user.id)">Save changes</button>
-        </form>
-       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-     
-      </div>
-    </div>
-  </div>
-</div>
+
 </div>
 </template>
 

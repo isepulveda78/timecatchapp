@@ -77,12 +77,12 @@
                         <div class="col">
                         <h5 class="card-title text-uppercase text-muted mb-0 text-white">Notes</h5>
                             <p class="mt-3 mb-0 text-sm">
-                                <span class="text-white mr-2">Yes</span>
+                                <span class="text-white mr-2">{{ project.notes }}</span>
                             </p>
                         </div>
                         <div class="col-auto">
                         <div class="icon icon-shape bg-gradient-default text-white border rounded-circle shadow">
-                            <i class="fas fa-clock"></i>
+                            <i class="far fa-sticky-note"></i>
                         </div>
                         </div>
                     </div>

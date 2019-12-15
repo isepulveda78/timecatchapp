@@ -116,6 +116,13 @@ class TaskController extends Controller
         return TaskResource::collection(auth()->user()->assigned()->paginate(5));
     }
 
+    public function taskWithFriends(Task $task)
+    {
+        return response()->json([
+            'data' => $task
+        ], 200);
+    }
+
     private function syncFriendsFromRequest(Task $task, Request $request)
     {   $friends = $this->getFriendsDataFromRequest($request);
         $friends_array = [];
@@ -153,5 +160,4 @@ class TaskController extends Controller
             'data' => $taskCount
         ], 200);
     }
-
 }

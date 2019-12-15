@@ -24,7 +24,7 @@
               @endif
             @else
                 <li class="nav-item">
-                  <a href="{{ route('tasks') }}" class="nav-link">Dashboard</a>
+                  <a href="/dashboard" class="nav-link">Dashboard</a>
                 </li>
                 <li class="nav-item">
                   <a href="{{ route('logout') }}" class="nav-link js-scroll-trigger btn btn-outline-success" 

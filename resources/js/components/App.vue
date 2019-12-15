@@ -8,9 +8,10 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Brand -->
-            <a class="navbar-brand pt-0" href="#">
-              <img src="#" class="navbar-brand-img" alt="...">
+            <a class="navbar-brand pt-0" href="/">
+              <img src="img/logo/timeCatchLogoBlue.png" class="navbar-brand-img" alt="TimeCatch">
             </a>
+            <h3 class="text-center">TimeCatch</h3>
             <!-- User -->
             <ul class="nav align-items-center d-md-none">
               <li class="nav-item dropdown">
@@ -53,7 +54,7 @@
                     <span>Support</span>
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a href="#!" class="dropdown-item">
+                  <a href="/logout" class="dropdown-item">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
                   </a>
@@ -118,8 +119,8 @@
               <!-- Navigation -->
               <ul class="navbar-nav mb-md-3">
                 <li class="nav-item">
-                  <a class="nav-link" href="">
-                      <i class="fas fa-sign-out-alt"></i> Log Out
+                  <a class="nav-link" href="/logout">
+                      <i class="fas fa-sign-out-alt"></i> Logout
                   </a>
                 </li>
               </ul>
