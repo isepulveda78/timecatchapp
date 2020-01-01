@@ -30,9 +30,7 @@ Route::middleware('auth:api')->group( function(){
 
     Route::get('/task/{task}', 'TaskController@show');
 
-    Route::patch('/task/{task}/clockin', 'TaskController@clockin');
-
-    Route::patch('/task/{task}/clockout', 'TaskController@clockout');
+    Route::get('/task/{task}/clocks', 'TaskController@clocks');
 
     Route::patch('/task/{task}', 'TaskController@update');
 
@@ -43,6 +41,8 @@ Route::middleware('auth:api')->group( function(){
     Route::get('/tasks/tasksWithFriends', 'TaskController@tasksWithFriends');
 
     Route::get('/task/taskWithFriends/{task}', 'TaskController@taskWithFriends');
+
+    Route::patch('/task/calculate_task/{task}', 'TaskController@calculateTime');
 
     /** Project's routes */
 
@@ -63,5 +63,15 @@ Route::middleware('auth:api')->group( function(){
     Route::patch('/projects/{project}/calculate', 'ProjectController@calculateTime');
 
     Route::get('/projects/tasksWithFriends', 'ProjectController@tasksWithFriends');
+
+    /** Clock routes */
+
+    Route::get('/clocks', 'ClockController@index');
+
+    Route::post('/clock', 'ClockController@store');
+
+    Route::patch('/clock/{clock}', 'ClockController@update');
+
+    Route::delete('/clock/{clock}', 'ClockController@destroy');
 
 }); 

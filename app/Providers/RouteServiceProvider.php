@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Task;
 use App\Project;
+use App\Clock;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -29,6 +30,12 @@ class RouteServiceProvider extends ServiceProvider
             $task = new Task;
 
             return Task::with('friends')->where($task->getRouteKeyName(), $value)->first();
+        });
+
+        $this->bind('clock', function ($value) {
+            $clock = new Clock;
+
+            return Clock::where($clock->getRouteKeyName(), $value)->first();
         });
 
         $this->bind('project', function ($value) {

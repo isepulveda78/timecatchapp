@@ -8,13 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     use Notifiable;
-    protected $fillable =  [ 'name', 'user_id', 'clocked_in', 'clocked_out'];
-
-    protected $casts = [
-        'clocked_in' => 'H:i:s'
-    ];
-
-    protected $appends = ['worked_time'];
+    protected $fillable =  [ 'name', 'user_id', 'clocked_in', 'clocked_out', 'total_time'];
 
     public function path()
     {
@@ -28,7 +22,7 @@ class Task extends Model
 
     public function friends()
     {
-        return $this->belongsToMany(User::class, 'task_user', 'task_id', 'user_id');
+        return $this->belongsToMany(User::class);
     }
 
     public function projects()
@@ -36,12 +30,24 @@ class Task extends Model
         return $this->belongsToMany(Project::class);
     }
 
-    public function getWorkedTimeAttribute() {
-        return Carbon::parse($this->clocked_out)->diffInMinutes($this->clocked_in);
+    public function clocks()
+    {
+        return  $this->hasMany(Clock::class);
     }
 
-    public function getWorkedTimeReadableAttribute() {
-        return Carbon::parse($this->clocked_out)->diffForHumans($this->clocked_in);
+    public function getWorkedTimeAttribute()
+    {
+        if($this->clocks->count() > 0){
+            return $this->clocks->reduce(function($total,$clock) {
+                if($clock->worked_time > 0) {
+                    return $total + $clock->worked_time;
+                } else {
+                    return $total;
+                }
+            },0);
+        } else{ 
+            return 0;
+        }
     }
 
 }

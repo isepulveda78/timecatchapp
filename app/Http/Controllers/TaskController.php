@@ -57,8 +57,6 @@ class TaskController extends Controller
 
         $this->syncFriendsFromRequest($task,$request);
 
-       
-
         return (new TaskResource($task))
         ->response()
         ->setStatusCode(Response::HTTP_OK);
@@ -78,6 +76,11 @@ class TaskController extends Controller
         return request()->validate([
             'name' => 'required'
         ]);
+    }
+
+    public function clocks(Task $task)
+    {
+        return $task->clocks()->get();
     }
 
     public function clockin(Task $task)
@@ -128,8 +131,10 @@ class TaskController extends Controller
         $friends_array = [];
         foreach(array_collapse($friends) as $friend_data) {
             array_push($friends_array,$friend_data['id']);
+            // User::find($friends_array)->notify(new AddUserToTask($task));
         }
         $task->friends()->sync($friends_array);
+       
     }
 
     private function getDataFromRequest(Request $request)
@@ -159,5 +164,16 @@ class TaskController extends Controller
         return response()->json([
             'data' => $taskCount
         ], 200);
+    }
+
+    public function calculateTime(Task $task)
+    {
+        $task->update([
+            'total_time' => $task->getWorkedTimeAttribute(),
+        ]);
+
+        return response()->json([
+            'data' => $task
+        ],201);  
     }
 }

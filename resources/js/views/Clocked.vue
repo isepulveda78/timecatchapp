@@ -1,58 +1,56 @@
 <template>
-    <div>
-        <div class="header bg-default pb-8 pt-5 pt-md-8"> 
-    <div class="container-fluid mt-5">
-
-    <div class="card shadow">
-        <div class="card-header border-bttom">
-            <h3 class="mb-0">Your clocked hours and dates.</h3>
+    <div class="container-fluid">
+      <!-- Table -->
+      <div class="row">
+        <div class="col mt-5">
+          <div class="card shadow mt-5">
+            <div class="card-header border-0">
+              <div class="row">
+                  <div class="col-sm-6">
+                      <h3 class="mb-0">Task: {{ task.name }}</h3>
+                  </div>
+                  <div class="col-sm-6">
+                      <button class="btn btn-sm btn-danger float-right mt-0" @click.prevent="calculateTime()">Calculate Time</button>
+                      <button class="btn btn-sm btn-default float-right mt-0  mr-1" @click.prevent="clockIn(task.id)">Clock In</button>
+                  </div>
+              </div>
             </div>
-            <div class="row mt-2 p-5">
-                <div class="col-sm-6">
-                <div class="card bg-gradient-default">
-                    <!-- Card body -->
-                    <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0 text-white">Clocked In Time</h5>
-                             <p class="mt-3 mb-0 text-sm">
-                                <span class="text-white mr-2">{{ task.clocked_in | moment("dddd, MMMM Do YYYY, h:mm:ss a")}}</span>
-                            </p>
-                        </div>
-                        <div class="col-auto">
-                        <div class="icon icon-shape bg-gradient-default text-white border rounded-circle shadow">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                </div>
-
-                <div class="col-sm-6">
-                <div class="card bg-gradient-default">
-                    <!-- Card body -->
-                    <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0 text-white">Clocked In Time</h5>
-                             <p class="mt-3 mb-0 text-sm">
-                                <span class="text-white mr-2">{{ task.clocked_out | moment("dddd, MMMM Do YYYY, h:mm:ss a")}}</span>
-                            </p>
-                        </div>
-                        <div class="col-auto">
-                        <div class="icon icon-shape bg-gradient-default text-white border rounded-circle shadow">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Clocked In Time</th>
+                    <th scope="col">Clocked Out Time</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="clock in clocks" :key="clock.id" :row="clock">
+                        <td>
+                            {{ clock.clocked_in }}
+                        </td>
+                        <td>
+                            {{ clock.clocked_out }}
+                        </td>
+                        <td>
+                            <div class="badge badge-dot mr-4">
+                                <button class="btn btn-sm btn-default" @click.prevent="clockOut(clock.id)">Clock Out</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+              </table>
             </div>
-        </div>
+                   
+            <div class="card-footer py-4">
+              <nav aria-label="pagination">
+          
+              </nav>
+            </div>
+          </div>
+
     </div>
-        </div>
+      </div>
     </div>
 </template>
 
@@ -63,6 +61,42 @@ export default {
     {
         return{
             task: '',
+            clocks: '',
+        }
+    },
+    methods: {
+        clockIn()
+        {
+            axios.post('/api/clock', 
+            {task_id: this.task.id} )
+            .then(response => {
+                this.clock = response.data.data;
+            })
+            .catch(errors=>{
+                this.errors = errors.response.data.errors;
+            });
+        },
+        clockOut(row)
+        {
+            axios.patch('/api/clock/' + row,
+            {task_id: this.task.id} )
+            .then(response => {
+                this.$router.push('/tasks');
+            })
+            .catch(errors => {
+                this.errors = errors.response.data.errors;
+            });
+        },
+        calculateTime()
+        {
+          axios.patch('/api/task/calculate_task/' + this.$route.params.id)
+          .then(response => {
+            this.task = response.data.data;
+          })
+          .catch(error => {
+             if(this.tasks > 0)
+            alert('Unable to fetch tasks.');
+          });
         }
     },
     mounted()
@@ -75,6 +109,15 @@ export default {
             if(this.tasks > 0)
             alert('Unable to fetch tasks.');
         });
+
+      axios.get('/api/task/' + this.$route.params.id + '/clocks')
+      .then(response => {
+          this.clocks = response.data;
+      })
+      .catch(error => {
+           if(this.tasks > 0)
+            alert('Unable to fetch time.');
+      });
     }
   }
 </script>

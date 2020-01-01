@@ -11631,24 +11631,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TaskList",
@@ -11700,47 +11682,25 @@ __webpack_require__.r(__webpack_exports__);
         _this.errors = errors.response.data.errors;
       });
     },
-    clockIn: function clockIn() {
-      var _this2 = this;
-
-      axios.patch('/api/task/' + this.new_task.id + '/clockin', {
-        clocked_in: this.new_task.clocked_in
-      }).then(function (response) {
-        $("#updateTask").modal("hide");
-      })["catch"](function (errors) {
-        _this2.errors = errors.reponse.data.errors;
-      });
-    },
-    clockOut: function clockOut() {
-      var _this3 = this;
-
-      axios.patch('/api/task/' + this.new_task.id + '/clockout', {
-        clocked_out: this.new_task.clocked_out
-      }).then(function (response) {
-        $("#updateTask").modal("hide");
-      })["catch"](function (errors) {
-        _this3.errors = errors.reponse.data.errors;
-      });
-    },
     resetData: function resetData() {
       this.task.name = '';
       this.task.friends = '';
     },
     deleteTask: function deleteTask(row) {
-      var _this4 = this;
+      var _this2 = this;
 
       axios["delete"]('/api/task/' + row).then(function (response) {
-        _this4.$router.push('/tasks');
+        _this2.$router.push('/tasks');
       })["catch"](function (error) {
         alert('Internal Error. Unable to delete task.');
 
         if (error.response.status === 404) {
-          _this4.$router.push('/tasks');
+          _this2.$router.push('/tasks');
         }
       });
     },
     getTasks: function getTasks() {
-      var _this5 = this;
+      var _this3 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       axios.get('/api/tasks', {
@@ -11748,22 +11708,22 @@ __webpack_require__.r(__webpack_exports__);
           page: page
         }
       }).then(function (response) {
-        _this5.tasks = response.data.data;
-        _this5.meta = response.data.meta;
+        _this3.tasks = response.data.data;
+        _this3.meta = response.data.meta;
       })["catch"](function (error) {
-        if (_this5.tasks > 0) alert('Unable to fetch tasks.');
+        if (_this3.tasks > 0) alert('Unable to fetch tasks.');
       });
     }
   },
   mounted: function mounted() {
-    var _this6 = this;
+    var _this4 = this;
 
     this.getTasks();
     axios.get('/api/friends').then(function (response) {
-      _this6.friends = response.data.data;
-      _this6.loading = false;
+      _this4.friends = response.data.data;
+      _this4.loading = false;
     })["catch"](function (error) {
-      _this6.loading = false;
+      _this4.loading = false;
 
       if (error.response.status === 404) {
         console.log("errors");
@@ -11784,86 +11744,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Pagination__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Pagination */ "./resources/js/components/Pagination.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -11945,10 +11825,6 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    loadUpdateModal: function loadUpdateModal(row) {
-      this.show = row;
-      $("#updateTask").modal("show");
-    },
     getTasks: function getTasks() {
       var _this = this;
 
@@ -11964,50 +11840,12 @@ __webpack_require__.r(__webpack_exports__);
         if (_this.tasks > 0) alert('Unable to fetch tasks.');
       });
     },
-    clockInFriend: function clockInFriend(row) {
-      var _this2 = this;
-
-      axios.patch('/api/task/' + this.show.id + '/clockin', {
-        clocked_in: this.show.clocked_in
-      }).then(function (response) {
-        $("#updateTask").modal("hide");
-
-        _this2.$router.push('/clocked/' + row);
-      })["catch"](function (errors) {
-        _this2.errors = errors.reponse;
-      });
-    },
-    clockOutFriend: function clockOutFriend(row) {
-      var _this3 = this;
-
-      axios.patch('/api/task/' + this.show.id + '/clockout', {
-        clocked_out: this.show.clocked_out
-      }).then(function (response) {
-        $("#updateTask").modal("hide");
-
-        _this3.$router.push('/clocked/' + row);
-      })["catch"](function (errors) {
-        _this3.errors = errors.reponse;
-      });
-    },
     viewTask: function viewTask(row) {
       return this.$router.push('/clocked/' + row);
     }
   },
   mounted: function mounted() {
-    var _this4 = this;
-
     this.getTasks();
-    axios.get('/api/friends').then(function (response) {
-      _this4.friends = response.data.data;
-      _this4.loading = false;
-    })["catch"](function (error) {
-      _this4.loading = false;
-
-      if (error.response.status === 404) {
-        console.log("errors");
-      }
-    });
   }
 });
 
@@ -12224,22 +12062,59 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Clocked',
   data: function data() {
     return {
-      task: ''
+      task: '',
+      clocks: ''
     };
   },
+  methods: {
+    clockIn: function clockIn() {
+      var _this = this;
+
+      axios.post('/api/clock', {
+        task_id: this.task.id
+      }).then(function (response) {
+        _this.clock = response.data.data;
+      })["catch"](function (errors) {
+        _this.errors = errors.response.data.errors;
+      });
+    },
+    clockOut: function clockOut(row) {
+      var _this2 = this;
+
+      axios.patch('/api/clock/' + row, {
+        task_id: this.task.id
+      }).then(function (response) {
+        _this2.$router.push('/tasks');
+      })["catch"](function (errors) {
+        _this2.errors = errors.response.data.errors;
+      });
+    },
+    calculateTime: function calculateTime() {
+      var _this3 = this;
+
+      axios.patch('/api/task/calculate_task/' + this.$route.params.id).then(function (response) {
+        _this3.task = response.data.data;
+      })["catch"](function (error) {
+        if (_this3.tasks > 0) alert('Unable to fetch tasks.');
+      });
+    }
+  },
   mounted: function mounted() {
-    var _this = this;
+    var _this4 = this;
 
     axios.get('/api/task/taskWithFriends/' + this.$route.params.id).then(function (response) {
-      _this.task = response.data.data;
+      _this4.task = response.data.data;
     })["catch"](function (error) {
-      if (_this.tasks > 0) alert('Unable to fetch tasks.');
+      if (_this4.tasks > 0) alert('Unable to fetch tasks.');
+    });
+    axios.get('/api/task/' + this.$route.params.id + '/clocks').then(function (response) {
+      _this4.clocks = response.data;
+    })["catch"](function (error) {
+      if (_this4.tasks > 0) alert('Unable to fetch time.');
     });
   }
 });
@@ -38460,32 +38335,6 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("td", [
-                          _vm._v(
-                            "\n                      " +
-                              _vm._s(
-                                _vm._f("moment")(
-                                  task.data.clocked_in,
-                                  "dddd, h:mm:ss a"
-                                )
-                              ) +
-                              "\n                    "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            "\n                       " +
-                              _vm._s(
-                                _vm._f("moment")(
-                                  task.data.clocked_out,
-                                  "dddd, h:mm:ss a"
-                                )
-                              ) +
-                              "\n                    "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
                           _c(
                             "a",
                             {
@@ -38645,82 +38494,6 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "clocked_in" } }, [
-                      _vm._v("Clocked In")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.new_task.clocked_in,
-                          expression: "new_task.clocked_in"
-                        }
-                      ],
-                      staticClass: "form-control mt-2",
-                      attrs: {
-                        id: "clocked_in",
-                        type: "text",
-                        placeholder: "Need to clock in",
-                        autocomplete: "off",
-                        disabled: ""
-                      },
-                      domProps: { value: _vm.new_task.clocked_in },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.new_task,
-                            "clocked_in",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "clocked_in" } }, [
-                      _vm._v("Clocked Out")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.new_task.clocked_out,
-                          expression: "new_task.clocked_out"
-                        }
-                      ],
-                      staticClass: "form-control mt-2",
-                      attrs: {
-                        id: "clocked_out",
-                        type: "text",
-                        placeholder: "Need to clock out",
-                        autocomplete: "off",
-                        disabled: ""
-                      },
-                      domProps: { value: _vm.new_task.clocked_out },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.new_task,
-                            "clocked_out",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
                     _c("label", { attrs: { for: "friends" } }, [
                       _vm._v("Users in Task")
                     ]),
@@ -38851,10 +38624,6 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Task")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Time Clocked In")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Time Clocked Out")]),
-        _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Users")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Completion")]),
@@ -38969,32 +38738,6 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _c("td", [
-                  _vm._v(
-                    "\n                 " +
-                      _vm._s(
-                        _vm._f("moment")(
-                          task.data.clocked_in,
-                          "dddd, h:mm:ss a"
-                        )
-                      ) +
-                      "\n               "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _vm._v(
-                    "\n                  " +
-                      _vm._s(
-                        _vm._f("moment")(
-                          task.data.clocked_out,
-                          "dddd, h:mm:ss a"
-                        )
-                      ) +
-                      "\n               "
-                  )
-                ]),
-                _vm._v(" "),
                 task.data.clocked_in && task.data.clocked_out
                   ? _c("td", [_vm._m(2, true)])
                   : _c("td", [_vm._m(3, true)]),
@@ -39026,28 +38769,6 @@ var render = function() {
                             _c("i", { staticClass: "fas fa-eye" }),
                             _vm._v("View")
                           ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "a",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: {
-                              href: "#",
-                              "data-toggle": "modal",
-                              "data-target": "#updateTask"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.loadUpdateModal(task.data)
-                              }
-                            }
-                          },
-                          [
-                            _c("i", { staticClass: "fas fa-clock" }),
-                            _vm._v("Clock In - Clock Out")
-                          ]
                         )
                       ]
                     )
@@ -39073,237 +38794,7 @@ var render = function() {
           1
         )
       ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "updateTask",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "exampleModalLabel",
-          "aria-hidden": "true"
-        }
-      },
-      [
-        _c(
-          "div",
-          {
-            staticClass: "modal-dialog modal-dialog-centered",
-            attrs: { role: "document" }
-          },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _vm._m(5),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("div", { staticClass: "form-group" }, [
-                  _c("label", { attrs: { for: "name" } }, [_vm._v("Name")]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.show.name,
-                        expression: "show.name"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: {
-                      id: "name",
-                      name: "name",
-                      type: "text",
-                      autocomplete: "off",
-                      disabled: ""
-                    },
-                    domProps: { value: _vm.show.name },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.show, "name", $event.target.value)
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
-                  _c("label", { attrs: { for: "clocked_in" } }, [
-                    _vm._v("Clocked In")
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.show.clocked_in,
-                        expression: "show.clocked_in"
-                      }
-                    ],
-                    staticClass: "form-control mt-2",
-                    attrs: {
-                      id: "clocked_in",
-                      type: "text",
-                      placeholder: "Need to clock in",
-                      autocomplete: "off",
-                      disabled: ""
-                    },
-                    domProps: { value: _vm.show.clocked_in },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.show, "clocked_in", $event.target.value)
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
-                  _c("label", { attrs: { for: "clocked_in" } }, [
-                    _vm._v("Clocked Out")
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.show.clocked_out,
-                        expression: "show.clocked_out"
-                      }
-                    ],
-                    staticClass: "form-control mt-2",
-                    attrs: {
-                      id: "clocked_out",
-                      type: "text",
-                      placeholder: "Need to clock out",
-                      autocomplete: "off",
-                      disabled: ""
-                    },
-                    domProps: { value: _vm.show.clocked_out },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.show, "clocked_out", $event.target.value)
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
-                  _c("label", { attrs: { for: "friends" } }, [
-                    _vm._v("Users in Task")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    [
-                      _c("multiselect", {
-                        attrs: {
-                          id: "friends",
-                          multiple: true,
-                          "hide-selected": true,
-                          label: "name",
-                          "track-by": "id",
-                          placeholder: "Add friends",
-                          options: _vm.friends,
-                          "close-on-select": false,
-                          disabled: true
-                        },
-                        model: {
-                          value: _vm.show.friends,
-                          callback: function($$v) {
-                            _vm.$set(_vm.show, "friends", $$v)
-                          },
-                          expression: "show.friends"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger mt-2",
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.submit($event)
-                            }
-                          }
-                        },
-                        [_vm._v("Save")]
-                      )
-                    ],
-                    1
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-12" }, [
-                  _c("div", { staticClass: "modal-footer border-top" }, [
-                    !_vm.show.clocked_in
-                      ? _c("div", [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-default btn-sm mt-1",
-                              on: {
-                                click: function($event) {
-                                  $event.preventDefault()
-                                  return _vm.clockInFriend(_vm.show.id)
-                                }
-                              }
-                            },
-                            [_vm._v("Clock In")]
-                          ),
-                          _vm._v(" \n                                   ")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.show.clocked_in && !_vm.show.clocked_out > 0
-                      ? _c("div", [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-default btn-sm mt-1",
-                              on: {
-                                click: function($event) {
-                                  $event.preventDefault()
-                                  return _vm.clockOutFriend(_vm.show.id)
-                                }
-                              }
-                            },
-                            [_vm._v("Clock Out")]
-                          )
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.show.clocked_in && _vm.show.clocked_out
-                      ? _c("div", [
-                          _c(
-                            "h6",
-                            { staticClass: "modal-title badge badge-success" },
-                            [_vm._v("Completed")]
-                          )
-                        ])
-                      : _vm._e()
-                  ])
-                ])
-              ])
-            ])
-          ]
-        )
-      ]
-    )
+    ])
   ])
 }
 var staticRenderFns = [
@@ -39322,10 +38813,6 @@ var staticRenderFns = [
     return _c("thead", { staticClass: "thead-light" }, [
       _c("tr", [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Task")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Time Clocked In")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Time Clocked Out")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Completion")]),
         _vm._v(" "),
@@ -39369,31 +38856,6 @@ var staticRenderFns = [
       },
       [_c("i", { staticClass: "fas fa-ellipsis-v" })]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header border-bottom" }, [
-      _c(
-        "h1",
-        { staticClass: "modal-title", attrs: { id: "modal-title-default" } },
-        [_vm._v("Clock In - Clock Out")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
   }
 ]
 render._withStripped = true
@@ -39791,81 +39253,104 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "header bg-default pb-8 pt-5 pt-md-8" }, [
-      _c("div", { staticClass: "container-fluid mt-5" }, [
-        _c("div", { staticClass: "card shadow" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "row mt-2 p-5" }, [
-            _c("div", { staticClass: "col-sm-6" }, [
-              _c("div", { staticClass: "card bg-gradient-default" }, [
-                _c("div", { staticClass: "card-body" }, [
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col" }, [
-                      _c(
-                        "h5",
-                        {
-                          staticClass:
-                            "card-title text-uppercase text-muted mb-0 text-white"
-                        },
-                        [_vm._v("Clocked In Time")]
-                      ),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "mt-3 mb-0 text-sm" }, [
-                        _c("span", { staticClass: "text-white mr-2" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm._f("moment")(
-                                _vm.task.clocked_in,
-                                "dddd, MMMM Do YYYY, h:mm:ss a"
-                              )
-                            )
-                          )
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _vm._m(1)
-                  ])
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col mt-5" }, [
+        _c("div", { staticClass: "card shadow mt-5" }, [
+          _c("div", { staticClass: "card-header border-0" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-sm-6" }, [
+                _c("h3", { staticClass: "mb-0" }, [
+                  _vm._v("Task: " + _vm._s(_vm.task.name))
                 ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-6" }, [
-              _c("div", { staticClass: "card bg-gradient-default" }, [
-                _c("div", { staticClass: "card-body" }, [
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col" }, [
-                      _c(
-                        "h5",
-                        {
-                          staticClass:
-                            "card-title text-uppercase text-muted mb-0 text-white"
-                        },
-                        [_vm._v("Clocked In Time")]
-                      ),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "mt-3 mb-0 text-sm" }, [
-                        _c("span", { staticClass: "text-white mr-2" }, [
-                          _vm._v(
-                            _vm._s(
-                              _vm._f("moment")(
-                                _vm.task.clocked_out,
-                                "dddd, MMMM Do YYYY, h:mm:ss a"
-                              )
-                            )
-                          )
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _vm._m(2)
-                  ])
-                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-6" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-danger float-right mt-0",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.calculateTime()
+                      }
+                    }
+                  },
+                  [_vm._v("Calculate Time")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "btn btn-sm btn-default float-right mt-0  mr-1",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.clockIn(_vm.task.id)
+                      }
+                    }
+                  },
+                  [_vm._v("Clock In")]
+                )
               ])
             ])
-          ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "table-responsive" }, [
+            _c(
+              "table",
+              { staticClass: "table align-items-center table-flush" },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.clocks, function(clock) {
+                    return _c("tr", { key: clock.id, attrs: { row: clock } }, [
+                      _c("td", [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(clock.clocked_in) +
+                            "\n                    "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(clock.clocked_out) +
+                            "\n                    "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("div", { staticClass: "badge badge-dot mr-4" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-default",
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  return _vm.clockOut(clock.id)
+                                }
+                              }
+                            },
+                            [_vm._v("Clock Out")]
+                          )
+                        ])
+                      ])
+                    ])
+                  }),
+                  0
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _vm._m(1)
         ])
       ])
     ])
@@ -39876,9 +39361,13 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header border-bttom" }, [
-      _c("h3", { staticClass: "mb-0" }, [
-        _vm._v("Your clocked hours and dates.")
+    return _c("thead", { staticClass: "thead-light" }, [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Clocked In Time")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Clocked Out Time")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Actions")])
       ])
     ])
   },
@@ -39886,30 +39375,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-auto" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "icon icon-shape bg-gradient-default text-white border rounded-circle shadow"
-        },
-        [_c("i", { staticClass: "fas fa-clock" })]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-auto" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "icon icon-shape bg-gradient-default text-white border rounded-circle shadow"
-        },
-        [_c("i", { staticClass: "fas fa-clock" })]
-      )
+    return _c("div", { staticClass: "card-footer py-4" }, [
+      _c("nav", { attrs: { "aria-label": "pagination" } })
     ])
   }
 ]

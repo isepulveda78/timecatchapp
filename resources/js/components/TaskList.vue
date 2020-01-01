@@ -14,8 +14,6 @@
                 <thead class="thead-light">
                   <tr>
                     <th scope="col">Task</th>
-                    <th scope="col">Time Clocked In</th>
-                    <th scope="col">Time Clocked Out</th>
                     <th scope="col">Users</th>
                     <th scope="col">Completion</th>
                     <th scope="col">Actions</th>
@@ -30,12 +28,6 @@
                         </div>
                       </div>
                     </th>
-                    <td>
-                      {{ task.data.clocked_in | moment("dddd, h:mm:ss a")}}
-                    </td>
-                    <td>
-                       {{  task.data.clocked_out | moment("dddd, h:mm:ss a")}}
-                    </td>
                     <td>
                         <a class="bg-info round round-sm text-white" data-toggle="tooltip" >
                           {{ task.data.friends.length }}
@@ -91,16 +83,6 @@
                                    <div class="form-group">
                                         <label for="name">Name</label>
                                         <input v-model="new_task.name" id="name" name="name" type="text" class="form-control" autocomplete="off">
-                                    </div>
-
-                                    <div class="form-group">
-                                       <label for="clocked_in">Clocked In</label>
-                                       <input v-model="new_task.clocked_in" id="clocked_in" type="text" placeholder="Need to clock in" class="form-control mt-2" autocomplete="off" disabled>
-                                    </div>
-
-                                    <div class="form-group">
-                                       <label for="clocked_in">Clocked Out</label>
-                                        <input v-model="new_task.clocked_out" id="clocked_out" type="text" placeholder="Need to clock out" class="form-control mt-2" autocomplete="off" disabled>
                                     </div>
                               
                                   <div class="form-group">
@@ -198,27 +180,6 @@ export default {
             }).catch(errors=>{
                 console.log("Error");
                 this.errors = errors.response.data.errors;
-            });
-        },
-        clockIn ()
-        {
-            axios.patch('/api/task/' + this.new_task.id + '/clockin', {
-              clocked_in: this.new_task.clocked_in
-            }).then(response => {
-                $("#updateTask").modal("hide");
-            }).catch(errors => {
-                this.errors = errors.reponse.data.errors;
-            });
-        },
-        clockOut ()
-        {
-            axios.patch('/api/task/' + this.new_task.id + '/clockout', {
-              clocked_out: this.new_task.clocked_out
-            }).then(response => {
-                $("#updateTask").modal("hide");  
-            })
-            .catch(errors => {
-                this.errors = errors.reponse.data.errors;
             });
         },
         resetData(){
